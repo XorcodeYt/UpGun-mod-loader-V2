@@ -1,0 +1,161 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Noah Perso\\Source\\Repos\\loader test\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6B7974E3-A239-3004-7D30-A101D8C67CE9}|..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader.csproj|c:\\users\\noah perso\\desktop\\azdfaf\\upgunmodloader3._0\\fonctions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B7974E3-A239-3004-7D30-A101D8C67CE9}|..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader.csproj|c:\\users\\noah perso\\desktop\\azdfaf\\upgunmodloader3._0\\upgun_mod_loader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B7974E3-A239-3004-7D30-A101D8C67CE9}|..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader.csproj|c:\\users\\noah perso\\desktop\\azdfaf\\upgunmodloader3._0.contentforms\\upload_mod.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B7974E3-A239-3004-7D30-A101D8C67CE9}|..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader.csproj|c:\\users\\noah perso\\desktop\\azdfaf\\upgun_mod_loader.autres\\notifs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B7974E3-A239-3004-7D30-A101D8C67CE9}|..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader.csproj|c:\\users\\noah perso\\desktop\\azdfaf\\upgunmodloader3._0\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B7974E3-A239-3004-7D30-A101D8C67CE9}|..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader.csproj|c:\\users\\noah perso\\desktop\\azdfaf\\upgunmodloader3._0\\upgun_mod_loader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B7974E3-A239-3004-7D30-A101D8C67CE9}|..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader.csproj|c:\\users\\noah perso\\desktop\\azdfaf\\customcontrols.rjcontrols\\switchbutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B7974E3-A239-3004-7D30-A101D8C67CE9}|..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader.csproj|c:\\users\\noah perso\\desktop\\azdfaf\\upgunmodloader3._0.contentforms\\upload_mod.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B7974E3-A239-3004-7D30-A101D8C67CE9}|..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader.csproj|c:\\users\\noah perso\\desktop\\azdfaf\\upgun_mod_loader.autres\\notifs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UpGun_Mod_Loader.cs",
+              "DocumentMoniker": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0\\UpGun_Mod_Loader.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0\\UpGun_Mod_Loader.cs",
+              "ToolTip": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0\\UpGun_Mod_Loader.cs",
+              "RelativeToolTip": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0\\UpGun_Mod_Loader.cs",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAQwHgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-10T23:00:04.79Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Upload_Mod.cs",
+              "DocumentMoniker": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0.ContentForms\\Upload_Mod.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0.ContentForms\\Upload_Mod.cs",
+              "ToolTip": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0.ContentForms\\Upload_Mod.cs",
+              "RelativeToolTip": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0.ContentForms\\Upload_Mod.cs",
+              "ViewState": "AgIAADkDAAAAAAAAAAAnwFADAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-10T22:46:45.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Notifs.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGun_Mod_Loader.Autres\\Notifs.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\azdfaf\\UpGun_Mod_Loader.Autres\\Notifs.cs",
+              "ToolTip": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGun_Mod_Loader.Autres\\Notifs.cs [Design]",
+              "RelativeToolTip": "..\\..\\..\\Desktop\\azdfaf\\UpGun_Mod_Loader.Autres\\Notifs.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-10T22:41:54.479Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Fonctions.cs",
+              "DocumentMoniker": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0\\Fonctions.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0\\Fonctions.cs",
+              "ToolTip": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0\\Fonctions.cs",
+              "RelativeToolTip": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0\\Fonctions.cs",
+              "ViewState": "AgIAAJUAAAAAAAAAAAAQwKsAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-10T22:38:23.42Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0\\Program.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0\\Program.cs",
+              "ToolTip": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0\\Program.cs",
+              "RelativeToolTip": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-10T22:38:20.789Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "SwitchButton.cs",
+              "DocumentMoniker": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\CustomControls.RJControls\\SwitchButton.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\azdfaf\\CustomControls.RJControls\\SwitchButton.cs",
+              "ToolTip": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\CustomControls.RJControls\\SwitchButton.cs",
+              "RelativeToolTip": "..\\..\\..\\Desktop\\azdfaf\\CustomControls.RJControls\\SwitchButton.cs",
+              "ViewState": "AgIAAJcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-10T22:38:13.45Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UpGun_Mod_Loader.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0\\UpGun_Mod_Loader.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0\\UpGun_Mod_Loader.cs",
+              "ToolTip": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0\\UpGun_Mod_Loader.cs [Design]",
+              "RelativeToolTip": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0\\UpGun_Mod_Loader.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-10T22:37:27.658Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Upload_Mod.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0.ContentForms\\Upload_Mod.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0.ContentForms\\Upload_Mod.cs",
+              "ToolTip": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGunModLoader3._0.ContentForms\\Upload_Mod.cs [Design]",
+              "RelativeToolTip": "..\\..\\..\\Desktop\\azdfaf\\UpGunModLoader3._0.ContentForms\\Upload_Mod.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-10T22:37:12.503Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Notifs.cs",
+              "DocumentMoniker": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGun_Mod_Loader.Autres\\Notifs.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\azdfaf\\UpGun_Mod_Loader.Autres\\Notifs.cs",
+              "ToolTip": "C:\\Users\\Noah Perso\\Desktop\\azdfaf\\UpGun_Mod_Loader.Autres\\Notifs.cs",
+              "RelativeToolTip": "..\\..\\..\\Desktop\\azdfaf\\UpGun_Mod_Loader.Autres\\Notifs.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-10T22:33:02.957Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

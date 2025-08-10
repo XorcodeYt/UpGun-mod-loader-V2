@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Update="CustomControls.RJControls\SwitchButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UpGunModLoader3._0.ContentForms\Upload_Mod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UpGunModLoader3._0\UpGun_Mod_Loader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UpGun_Mod_Loader.Autres\Notifs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
