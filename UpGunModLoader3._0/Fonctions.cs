@@ -34,7 +34,7 @@ internal class Fonctions
 
 	private static string path2 = appdatapath2 + "\\repak.exe";
 
-	private static string AESKey = "0xE2DCEB7A0BDE2963E5DCC79FA9664D6F6A9E604825948E9E3F7F47673564AE29";
+	private static string AESKey = "0x79524750FB51C47CB6A52DA27E708AB78D91D62A196525FDF18F19424AC45498";
 
 	private static string ARPath = GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\\UpGun\\AssetRegistry.bin";
 
@@ -78,7 +78,7 @@ internal class Fonctions
 
 	public static async Task<string> GetWHLink()
 	{
-		HttpResponseMessage val = await new HttpClient().GetAsync("https://dl.dropboxusercontent.com/scl/fi/1ote2zc97u6xy6cig5bde/WebhookLink.txt?rlkey=8yz0uefnpjaedu69w7haeetvq&raw=1");
+		HttpResponseMessage val = await new HttpClient().GetAsync("https://dl.dropboxusercontent.com/scl/fi/du7fkui6oxv5juai4uy99/WebhookLink.txt?rlkey=26cqum86x0xenbh3x5kp2dp9g&st=65xsw56b\r\n");
 		if (val.IsSuccessStatusCode)
 		{
 			return (await val.Content.ReadAsStringAsync()).ToString();
@@ -103,7 +103,11 @@ internal class Fonctions
 		string text = appdatapath3 + "\\" + Name;
 		new WebClient().DownloadFile(URL, text + ".zip");
 		Thread.Sleep(200);
-		ZipFile.ExtractToDirectory(text + ".zip", appdatapath3);
+        if (Directory.Exists(text))
+        {
+            Directory.Delete(text, recursive: true);
+        }
+        ZipFile.ExtractToDirectory(text + ".zip", appdatapath3);
 		File.Delete(text + ".zip");
 		File.Move(text + ".pak", GetUpGunPath() + "\\" + Name + ".pak");
 		if (Directory.Exists(text))
@@ -155,43 +159,54 @@ internal class Fonctions
 		return true;
 	}
 
-	public static void InstallModsSupport()
-	{
-		if (Process.GetProcessesByName("UpGun-Win64-Shipping").Length != 0)
-		{
-			ExecuteCmdCommand("taskkill /f /im UpGun-Win64-Shipping.exe");
-		}
-		Thread.Sleep(300);
-		Notif("Installation of the mods support... (you can take a coffee)", 3);
-		ExecuteCmdCommand(path2 + " --aes-key " + AESKey + " unpack \"" + PakGameFilePath + "\"");
-		File.Delete(PakGameFilePath);
-		Directory.CreateDirectory(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\\UpGun");
-		File.Move(GetUpGunPath() + "\\UpGun-WindowsNoEditor\\UpGun\\AssetRegistry.bin", ARPath);
-		ExecuteCmdCommand(path2 + " pack \"" + GetUpGunPath() + "\\UpGun-WindowsNoEditor\"");
-		ExecuteCmdCommand(path2 + " pack \"" + GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\"");
-		Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor", recursive: true);
-		File.Copy(ARPath, GetUpGunPath() + "\\AssetRegistry.bak");
-		Notif("The mods support is installed.", 3);
-	}
+    public static void InstallModsSupport()
+    {
+        if (Process.GetProcessesByName("UpGun-Win64-Shipping").Length != 0)
+        {
+            ExecuteCmdCommand("taskkill /f /im UpGun-Win64-Shipping.exe");
+        }
+        Thread.Sleep(300);
+        Notif("Installation of the mods support... (you can take a coffee)", 3);
 
-	public static void RepakTheNewBinFile()
+        string quotedPath2 = $"\"{path2}\"";
+
+        ExecuteCmdCommand($"{quotedPath2} --aes-key {AESKey} unpack \"{PakGameFilePath}\"");
+        File.Delete(PakGameFilePath);
+
+        Directory.CreateDirectory(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\\UpGun");
+        File.Move(GetUpGunPath() + "\\UpGun-WindowsNoEditor\\UpGun\\AssetRegistry.bin", ARPath);
+
+        ExecuteCmdCommand($"{quotedPath2} pack \"{GetUpGunPath()}\\UpGun-WindowsNoEditor\"");
+        ExecuteCmdCommand($"{quotedPath2} pack \"{GetUpGunPath()}\\UpGun-WindowsNoEditor_AssetRegistry\"");
+
+        Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor", recursive: true);
+        File.Copy(ARPath, GetUpGunPath() + "\\AssetRegistry.bak");
+
+        Notif("The mods support is installed.", 3);
+    }
+
+
+    public static void RepakTheNewBinFile()
 	{
-		File.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry.pak");
-		ExecuteCmdCommand(path2 + " pack \"" + GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\"");
+        string quotedPath2 = $"\"{path2}\"";
+        File.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry.pak");
+		ExecuteCmdCommand($"{quotedPath2} pack \"" + GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\"");
 	}
 
 	public static void ResetBinFile()
 	{
-		File.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry.pak");
+        string quotedPath2 = $"\"{path2}\"";
+        File.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry.pak");
 		File.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\\UpGun\\AssetRegistry.bin");
 		File.Copy(GetUpGunPath() + "\\AssetRegistry.bak", ARPath);
-		ExecuteCmdCommand(path2 + " pack \"" + GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\"");
+		ExecuteCmdCommand($"{quotedPath2} pack \"" + GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\"");
 	}
 
 	public static void MajModLoaderUpGun()
 	{
-		Notif("Checking if latest version of mod support is installed.", 1);
-		ExecuteCmdCommand(path2 + " --aes-key " + AESKey + " unpack \"" + PakGameFilePath + "\"");
+        string quotedPath2 = $"\"{path2}\"";
+        Notif("Checking if latest version of mod support is installed.", 1);
+		ExecuteCmdCommand($"{quotedPath2} --aes-key " + AESKey + " unpack \"" + PakGameFilePath + "\"");
 		if (File.Exists(GetUpGunPath() + "\\UpGun-WindowsNoEditor\\UpGun\\AssetRegistry.bin"))
 		{
 			Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor", recursive: true);
@@ -204,8 +219,11 @@ internal class Fonctions
 		}
 		else
 		{
-			Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor", recursive: true);
-			Notif("Latest mods support is already installed!", 1);
+			if (Directory.Exists(GetUpGunPath() + "\\UpGun-WindowsNoEditor"))
+			{
+                Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor", recursive: true);
+            }
+            Notif("Latest mods support is already installed!", 1);
 		}
 	}
 
@@ -231,7 +249,7 @@ internal class Fonctions
 
 	public static async Task<string> GetUploadedMods()
 	{
-		string text = "https://dl.dropboxusercontent.com/scl/fi/m9yrqsp2s74dpk7e1vzwt/Mods.txt?rlkey=b3in1nsnq2xnccw3ky78zqfxb&raw=1";
+		string text = "https://dl.dropboxusercontent.com/scl/fi/18futzperhh6v8ynz06hs/Mods.txt?rlkey=j6h086tbhd3dgutmgmuw013e0&st=oj5edc3s";
 		HttpClient httpClient = new HttpClient();
 		try
 		{

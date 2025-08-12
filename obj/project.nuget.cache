@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "pH00R/Tjqlk=",
+  "dgSpecHash": "X4/E7sAko+0=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Noah Perso\\Documents\\GitHub\\UpGunModLoaderApp\\UpGunModLoader.csproj",
+  "projectFilePath": "C:\\Users\\Noah Perso\\Documents\\GitHub\\FLIPPY-MOD-LOADER\\UpGunModLoader.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Noah Perso\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.3\\microsoft.netframework.referenceassemblies.1.0.3.nupkg.sha512",
-    "C:\\Users\\Noah Perso\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net481\\1.0.3\\microsoft.netframework.referenceassemblies.net481.1.0.3.nupkg.sha512"
+    "C:\\Users\\Noah Perso\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net481\\1.0.3\\microsoft.netframework.referenceassemblies.net481.1.0.3.nupkg.sha512",
+    "C:\\Users\\Noah Perso\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }

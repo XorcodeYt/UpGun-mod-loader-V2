@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using CustomControls.RJControls;
+using UpGun_Mod_Loader.Autres;
 using UpGunModLoader3._0.ContentForms;
 
 namespace UpGunModLoader3._0;
@@ -147,7 +148,7 @@ public class UpGun_Mod_Loader : Form
 		{
 			string[] array3 = array2[i].Split(',');
 			string text = array3[1];
-			string text2 = array3[6];
+            string text2 = array3[6];
 			if ((string.IsNullOrEmpty(searchName) || text.IndexOf(searchName, StringComparison.OrdinalIgnoreCase) != -1) && (string.IsNullOrEmpty(searchType) || text2 == searchType))
 			{
 				list.Add(array3);
@@ -564,7 +565,7 @@ public class UpGun_Mod_Loader : Form
 		this.pnlTop.TabIndex = 0;
 		this.pbUpGunLogo.Dock = System.Windows.Forms.DockStyle.Fill;
 		this.pbUpGunLogo.ErrorImage = null;
-		this.pbUpGunLogo.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/1h4jelwt41e5h5e71ol0h/UpGunLogo.png?rlkey=y62ynbqscsj3sf8qkpr8ns7io&raw=1";
+		this.pbUpGunLogo.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/mm9pj2cuqya0yvmk43imb/UpGunLogo.png?rlkey=r4bfy2ee5gteq78ch04jgbfvc&st=hz1uydz4\r\n";
 		this.pbUpGunLogo.InitialImage = null;
 		this.pbUpGunLogo.Location = new System.Drawing.Point(384, 0);
 		this.pbUpGunLogo.Name = "pbUpGunLogo";
@@ -600,7 +601,7 @@ public class UpGun_Mod_Loader : Form
 		this.pbUploadMod.Cursor = System.Windows.Forms.Cursors.Hand;
 		this.pbUploadMod.Dock = System.Windows.Forms.DockStyle.Right;
 		this.pbUploadMod.ErrorImage = null;
-		this.pbUploadMod.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/3sb65dniokq1bsw742ahe/UploadLogo.png?rlkey=ss4gyhbsxt8u92wqqkt18dse5&raw=1";
+		this.pbUploadMod.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/cnhtcvlvus9pptd6d99ok/UploadLogo.png?rlkey=n06r10kqqow344aifar6fxqk0&st=rova85mw\r\n";
 		this.pbUploadMod.InitialImage = null;
 		this.pbUploadMod.Location = new System.Drawing.Point(157, 0);
 		this.pbUploadMod.Name = "pbUploadMod";
@@ -862,7 +863,7 @@ public class UpGun_Mod_Loader : Form
 		this.pbDiscordInvite.Cursor = System.Windows.Forms.Cursors.Hand;
 		this.pbDiscordInvite.Dock = System.Windows.Forms.DockStyle.Right;
 		this.pbDiscordInvite.ErrorImage = null;
-		this.pbDiscordInvite.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/9wwjy3c3m1k93cukji8pi/DiscordLogo.png?rlkey=jepz6b1mwopavefhvtbu7slmh&raw=1";
+		this.pbDiscordInvite.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/ki51nywut66tj78uiipkn/DiscordLogo.png?rlkey=v18ao1qm003i4ophbqrud4dd1&st=6y2pr107\r\n";
 		this.pbDiscordInvite.InitialImage = null;
 		this.pbDiscordInvite.Location = new System.Drawing.Point(232, 0);
 		this.pbDiscordInvite.Name = "pbDiscordInvite";
@@ -906,7 +907,7 @@ public class UpGun_Mod_Loader : Form
 		this.pbYoutubeChannel.Cursor = System.Windows.Forms.Cursors.Hand;
 		this.pbYoutubeChannel.Dock = System.Windows.Forms.DockStyle.Left;
 		this.pbYoutubeChannel.ErrorImage = null;
-		this.pbYoutubeChannel.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/pd76fw36u1eg5uf02ocwq/YoutubeLogo.png?rlkey=9mqxrbao076llxub0glvyp25o&raw=1";
+		this.pbYoutubeChannel.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/wbv4ui1pb4spn8xkw7of3/YoutubeLogo.png?rlkey=rbcykzybsbe7mp0xj7es0ic2j&st=s6qd44hz\r\n";
 		this.pbYoutubeChannel.InitialImage = null;
 		this.pbYoutubeChannel.Location = new System.Drawing.Point(0, 0);
 		this.pbYoutubeChannel.Name = "pbYoutubeChannel";

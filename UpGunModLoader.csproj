@@ -14,16 +14,21 @@
     <ApplicationIcon>app.ico</ApplicationIcon>
     <RootNamespace />
   </PropertyGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Reference Include="QueenIO">
-      <HintPath>..\modloader\Files\QueenIO.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\modloader\Files\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="QueenIO">
+      <HintPath>QueenIO.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Core" />
+    <Reference Include="UAssetAPI">
+      <HintPath>UAssetAPI.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
