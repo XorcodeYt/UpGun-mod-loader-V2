@@ -1,3 +1,4 @@
+using CustomControls.RJControls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,142 +7,211 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using CustomControls.RJControls;
-using UpGun_Mod_Loader.Autres;
-using UpGunModLoader3._0.ContentForms;
+using System.Runtime.InteropServices;
+using System.Drawing.Drawing2D;
 
 namespace UpGunModLoader3._0;
 
 public class UpGun_Mod_Loader : Form
 {
-	private static Mutex mutex = new Mutex(initiallyOwned: true, "{E3D2A813-62E2-4DDF-9E91-38C20EC890D6}");
+    [DllImport("user32.dll")] private static extern bool ReleaseCapture();
+    [DllImport("user32.dll")] private static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
+    private const int WM_NCLBUTTONDOWN = 0xA1;
+    private const int HTCAPTION = 0x2;
+
+
+    private static Mutex mutex = new Mutex(initiallyOwned: true, "{E3D2A813-62E2-4DDF-9E91-38C20EC890D6}");
 
 	private int currentPage;
 
-	private const int itemsPerPage = 10;
+	private const int itemsPerPage = 6;
+    private Panel pnlTitle;
+    private Panel pnlTitleText;
+    private Label lblTitle;
+    private Panel pnlClose;
+    private Button btnReduce;
+    private Button btnClose;
+    private PictureBox pbLogo;
+    private Button btnNext;
+    private Label lblPage;
+    private Button btnPrevious;
+    private Panel pnlPages;
+    private Panel pnlSearch;
+    private DarkComboBox cbSearchTypes;
+    private TextBox tbSearchBar;
+    private FlowLayoutPanel flpnlMods;
+    private IContainer components;
+    private bool CanSearch = true;
 
-	private IContainer components;
-
-	private Panel pnlTop;
-
-	private Panel pnlCredits;
-
-	private Panel pnlc1;
-
-	private Panel pnlc2;
-
-	private FlowLayoutPanel flpnlMods;
-
-	private Panel pnlc4;
-
-	private Panel pnlc3;
-
-	private Panel pnlBR;
-
-	private Panel pnlBL;
-
-	private Panel pnlc5;
-
-	private Panel pnlc6;
-
-	private Panel pnlTR;
-
-	private Panel pnlTL;
-
-	private PictureBox pbNextPage;
-
-	private PictureBox pbPreviousPage;
-
-	private Panel pnlcale;
-
-	private PictureBox pbUpGunLogo;
-
-	private Label lblPageNum;
-
-	private PictureBox pbUploadMod;
-
-	private Panel pnlc8;
-
-	private Label lblCopyright;
-
-	private Panel pnlc9;
-
-	private Panel pnlc10;
-
-	private PictureBox pbDiscordInvite;
-
-	private Panel pnlc11;
-
-	private PictureBox pbYoutubeChannel;
-
-	private Panel pnlc12;
-
-	private Label lblDiscordFeedback;
-
-	private Panel pnlc13;
-
-	private Label lblMadeBy;
-
-	private Button btnSearch;
-
-	private ComboBox cbSearchModType;
-
-	private TextBox tbModSearch;
-
-	private Panel pnlc15;
-
-	private Label lblModNameResearch;
-
-	private Panel pnlc14;
-
-	private Label lblModTypeResearch;
-
-	private Panel pnlc17;
-
-	private Panel pnlc18;
-
-	private Panel pnlc16;
-
-	private Panel pnlc20;
-
-	private Panel pnlc19;
-
-	private Panel pnlSearch2;
-
-	private Panel panel2;
-
-	private Panel pnlc21;
-
-	public UpGun_Mod_Loader()
+    public UpGun_Mod_Loader()
 	{
 		if (mutex.WaitOne(TimeSpan.Zero, exitContext: true))
 		{
 			InitializeComponent();
-			Control.CheckForIllegalCrossThreadCalls = false;
-			Fonctions.CheckIfModSupportInstalled();
-			//Process.Start(Fonctions.appdatapath2 + "\\AutoUpdate.exe");
-			if (File.Exists(Fonctions.PakModsSupportFilePath))
-			{
-				Fonctions.MajModLoaderUpGun();
-			}
-			GetModsFileIds();
-			mutex.ReleaseMutex();
-		}
-		else
+
+            this.btnClose.Click += btnClose_Click;
+            this.btnReduce.Click += btnReduce_Click;
+			this.pnlTitleText.MouseDown += TitleDrag_MouseDown;
+            this.pnlTitle.MouseDown += TitleDrag_MouseDown;
+            this.lblTitle.MouseDown += TitleDrag_MouseDown;
+            this.pbLogo.MouseDown += TitleDrag_MouseDown;
+            this.btnNext.Click += pbNextPage_Click;
+            this.btnPrevious.Click += pbPreviousPage_Click;
+            this.cbSearchTypes.SelectedIndexChanged += Search;
+            this.tbSearchBar.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    e.SuppressKeyPress = true;
+                    Search(s, e);
+                }
+            };
+
+            int radius = 18;
+
+            MakeRounded(pnlSearch, radius);
+            MakeRounded(btnNext, radius);
+            MakeRounded(btnPrevious, radius);
+            MakeRounded(pnlPages, radius);
+            MakeRounded(this, radius);
+            this.Resize += (s, e) => MakeRounded(this, radius);
+
+            tbSearchBar.BorderStyle = BorderStyle.None;
+            tbSearchBar.BackColor = Color.FromArgb(20, 22, 30);
+            tbSearchBar.ForeColor = Color.White;
+            tbSearchBar.Font = new Font("Segoe UI", 10f, FontStyle.Regular);
+            tbSearchBar.Padding = new Padding(6, 4, 6, 4);
+            InitSearchBarPlaceholder();
+
+            MakeRounded(tbSearchBar, 6);
+            tbSearchBar.Resize += (s, e) => MakeRounded(tbSearchBar, 6);
+
+            pnlSearch.Paint += pnlSearch_Paint;
+
+            Control.CheckForIllegalCrossThreadCalls = false;
+            Fonctions.CheckIfModSupportInstalled();
+            if (File.Exists(Fonctions.PakModsSupportFilePath))
+            {
+                Fonctions.MajModLoaderUpGun();
+            }
+            GetModsFileIds();
+            mutex.ReleaseMutex();
+        }
+        else
 		{
 			MessageBox.Show("The mod loader is already opened!");
 			Close();
 		}
 	}
+    private void InitSearchBarPlaceholder()
+    {
+        tbSearchBar.ForeColor = Color.Gray;
+        tbSearchBar.Text = "Search by name";
 
-	private async void GetModsFileIds()
+        tbSearchBar.GotFocus += (s, e) =>
+        {
+            if (tbSearchBar.Text == "Search by name")
+            {
+                tbSearchBar.Text = "";
+                tbSearchBar.ForeColor = Color.White; // couleur texte normal
+            }
+        };
+
+        tbSearchBar.LostFocus += (s, e) =>
+        {
+            if (string.IsNullOrWhiteSpace(tbSearchBar.Text))
+            {
+                tbSearchBar.Text = "Search by name";
+                tbSearchBar.ForeColor = Color.Gray;
+            }
+        };
+    }
+
+
+    private void pnlSearch_Paint(object sender, PaintEventArgs e)
+    {
+        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+        Color border = Color.FromArgb(60, 65, 75);
+        Color fill = Color.FromArgb(20, 22, 30);
+
+        var tbRect = tbSearchBar.Bounds;
+        tbRect.Inflate(2, 2);
+        using (var path = GetRoundedPath(tbRect, 6))
+        using (var pen = new Pen(border, 1))
+        using (var brush = new SolidBrush(fill))
+        {
+            e.Graphics.FillPath(brush, path);
+            e.Graphics.DrawPath(pen, path);
+        }
+    }
+
+    private GraphicsPath GetRoundedPath(Rectangle rect, int radius)
+    {
+        var path = new GraphicsPath();
+        int d = radius * 2;
+        path.AddArc(rect.X, rect.Y, d, d, 180, 90);
+        path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90);
+        path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);
+        path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
+        path.CloseFigure();
+        return path;
+    }
+
+    private void MakeRounded(Control ctrl, int radius)
+    {
+        var bounds = ctrl.ClientRectangle;
+        System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+        int d = radius * 2;
+
+        path.StartFigure();
+        path.AddArc(bounds.X, bounds.Y, d, d, 180, 90);
+        path.AddArc(bounds.Right - d, bounds.Y, d, d, 270, 90);
+        path.AddArc(bounds.Right - d, bounds.Bottom - d, d, d, 0, 90);
+        path.AddArc(bounds.X, bounds.Bottom - d, d, d, 90, 90);
+        path.CloseFigure();
+
+        ctrl.Region = new Region(path);
+    }
+
+    private void btnClose_Click(object sender, EventArgs e)
+    {
+        this.Close();
+    }
+
+    private void btnReduce_Click(object sender, EventArgs e)
+    {
+        this.WindowState = FormWindowState.Minimized;
+    }
+
+     private void TitleDrag_MouseDown(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Left)
+        {
+            ReleaseCapture();
+            SendMessage(this.Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+        }
+    }
+
+
+    private async void GetModsFileIds()
 	{
-		GetAllMods(await Fonctions.GetUploadedMods(), tbModSearch.Text, cbSearchModType.SelectedItem?.ToString());
+		GetAllMods(await Fonctions.GetUploadedMods(), tbSearchBar.Text, cbSearchTypes.SelectedItem?.ToString());
 	}
 
 	private void GetAllMods(string allMods, string searchName, string searchType)
 	{
-		string[] array = allMods.Split(new string[2] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+        if (string.IsNullOrWhiteSpace(searchName) ||
+        string.Equals(searchName, "Search by name", StringComparison.OrdinalIgnoreCase))
+            searchName = null;
+        else
+            searchName = searchName.Trim();
+        if (string.IsNullOrWhiteSpace(searchType) ||
+        string.Equals(searchType, "Search by types", StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(searchType, "All", StringComparison.OrdinalIgnoreCase))
+            searchType = null;
+        else
+            searchType = searchType.Trim();
+        string[] array = allMods.Split(new string[2] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 		List<string[]> list = new List<string[]>();
 		string[] array2 = array;
 		for (int i = 0; i < array2.Length; i++)
@@ -154,189 +224,131 @@ public class UpGun_Mod_Loader : Form
 				list.Add(array3);
 			}
 		}
-		int num = currentPage * 10;
-		int num2 = Math.Min((currentPage + 1) * 10, list.Count);
+		int num = currentPage * itemsPerPage;
+		int num2 = Math.Min((currentPage + 1) * itemsPerPage, list.Count);
 		for (int j = num; j < num2; j++)
 		{
 			string[] values = list[j];
 			Invoke((MethodInvoker)delegate
 			{
-				LoadMod(values[0], values[1], values[2], values[3], values[4], values[5], values[6]);
+                LoadMod(values[0], values[1], values[2], values[3], values[4], values[5], values[6]);
 			});
 		}
 	}
 
-	private void LoadMod(string OwnerName, string ModName, string Date, string ImageUrl, string ModDLUrl, string ZipFileName, string ModType)
-	{
-		string NewZipFileName = ZipFileName.Replace(".zip", "");
-		CheckState checkState = CheckState.Unchecked;
-		if (File.Exists(Fonctions.GetUpGunPath() + "\\" + NewZipFileName + ".pak"))
-		{
-			checkState = CheckState.Checked;
-		}
-		Panel panel = new Panel
-		{
-			Name = "pnlMod" + OwnerName,
-			BackColor = Color.FromArgb(10, 10, 10),
-			Size = new Size(340, 165)
-		};
-		Panel panel2 = new Panel
-		{
-			Name = "pnlMod" + OwnerName,
-			BackColor = Color.FromArgb(10, 10, 10),
-			Dock = DockStyle.Left,
-			Size = new Size(143, 165)
-		};
-		Panel panel3 = new Panel
-		{
-			Name = "pnlMod" + OwnerName,
-			BackColor = Color.FromArgb(10, 10, 10),
-			Dock = DockStyle.Bottom,
-			Size = new Size(143, 52)
-		};
-		Panel panel4 = new Panel
-		{
-			Name = "pnlColor2" + OwnerName,
-			BackColor = Color.Purple,
-			Dock = DockStyle.Left,
-			Size = new Size(1, 165)
-		};
-		Panel panel5 = new Panel
-		{
-			Name = "pnlColor2" + OwnerName,
-			BackColor = Color.Purple,
-			Dock = DockStyle.Top,
-			Size = new Size(143, 1)
-		};
-		Panel panel6 = new Panel
-		{
-			Name = "pnlCale" + OwnerName,
-			BackColor = Color.FromArgb(10, 10, 10),
-			Dock = DockStyle.Left,
-			Size = new Size(32, 32)
-		};
-		Panel panel7 = new Panel
-		{
-			Name = "pnlCale" + OwnerName,
-			BackColor = Color.FromArgb(10, 10, 10),
-			Dock = DockStyle.Bottom,
-			Size = new Size(22, 22)
-		};
-		SwitchButton SBDLSwitch = new SwitchButton
-		{
-			Name = "SBDLSwitch" + OwnerName,
-			Dock = DockStyle.Left,
-			AutoSize = false,
-			Cursor = Cursors.Hand,
-			CheckState = checkState,
-			Size = new Size(77, 35)
-		};
-		PictureBox value = new PictureBox
-		{
-			Name = "pb" + OwnerName,
-			ImageLocation = ImageUrl,
-			ErrorImage = null,
-			InitialImage = null,
-			SizeMode = PictureBoxSizeMode.StretchImage,
-			Dock = DockStyle.Top,
-			Size = new Size(143, 91)
-		};
-		Label label = new Label
-		{
-			Name = "lbl" + OwnerName,
-			Text = "Name: " + ModName,
-			ForeColor = Color.White,
-			AutoSize = false,
-			Size = new Size(197, 21),
-			Font = new Font("Segoe UI", 12f, FontStyle.Bold),
-			BackColor = Color.FromArgb(10, 10, 10),
-			Dock = DockStyle.Top
-		};
-		Label label2 = new Label
-		{
-			Name = "lbl" + OwnerName,
-			Text = "Date: " + Date,
-			ForeColor = Color.White,
-			AutoSize = false,
-			Size = new Size(197, 21),
-			Font = new Font("Segoe UI", 12f, FontStyle.Bold),
-			BackColor = Color.FromArgb(10, 10, 10),
-			Dock = DockStyle.Top
-		};
-		Label label3 = new Label
-		{
-			Name = "lbl" + OwnerName,
-			Text = "Creator: " + OwnerName,
-			ForeColor = Color.White,
-			AutoSize = false,
-			Size = new Size(197, 21),
-			Font = new Font("Segoe UI", 12f, FontStyle.Bold),
-			BackColor = Color.FromArgb(10, 10, 10),
-			Dock = DockStyle.Top
-		};
-		Label label4 = new Label
-		{
-			Name = "lbl" + ModType,
-			Text = "Type: " + ModType,
-			ForeColor = Color.White,
-			AutoSize = false,
-			Size = new Size(197, 21),
-			Font = new Font("Segoe UI", 12f, FontStyle.Bold),
-			BackColor = Color.FromArgb(10, 10, 10),
-			Dock = DockStyle.Bottom
-		};
-		SBDLSwitch.CheckedChanged += delegate
-		{
-			if (SBDLSwitch.Checked)
-			{
-				if (Fonctions.CheckIfModSupportInstalled())
-				{
-					if (Process.GetProcessesByName("UpGun-Win64-Shipping").Length != 0)
-					{
-						Fonctions.ExecuteCmdCommand("taskkill /f /im UpGun-Win64-Shipping.exe");
-						MessageBox.Show("UpGun.exe closed!");
-					}
-					Thread.Sleep(300);
-					Fonctions.InstallMod(ModDLUrl, NewZipFileName);
-				}
-			}
-			else if (Fonctions.CheckIfModSupportInstalled())
-			{
-				if (Process.GetProcessesByName("UpGun-Win64-Shipping").Length != 0)
-				{
-					Fonctions.ExecuteCmdCommand("taskkill /f /im UpGun-Win64-Shipping.exe");
-					MessageBox.Show("UpGun.exe closed!");
-				}
-				Thread.Sleep(300);
-				Fonctions.DeleteMod(NewZipFileName);
-			}
-		};
-		flpnlMods.Controls.Add(panel);
-		panel.BringToFront();
-		panel.Controls.Add(panel2);
-		panel.Controls.Add(panel4);
-		panel4.BringToFront();
-		panel2.Controls.Add(value);
-		panel.Controls.Add(label);
-		label.BringToFront();
-		panel.Controls.Add(label2);
-		label2.BringToFront();
-		panel.Controls.Add(label3);
-		label3.BringToFront();
-		panel.Controls.Add(label4);
-		label4.BringToFront();
-		panel2.Controls.Add(panel5);
-		panel5.BringToFront();
-		panel2.Controls.Add(panel3);
-		panel3.Controls.Add(panel6);
-		panel6.BringToFront();
-		panel3.Controls.Add(panel7);
-		panel7.BringToFront();
-		panel3.Controls.Add(SBDLSwitch);
-		SBDLSwitch.BringToFront();
-	}
+    private void LoadMod(string OwnerName, string ModName, string Date, string ImageUrl, string ModDLUrl, string ZipFileName, string ModType)
+    {
+        string newZipFileName = ZipFileName.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)
+            ? Path.GetFileNameWithoutExtension(ZipFileName)
+            : ZipFileName;
 
-	private void pbPreviousPage_Click(object sender, EventArgs e)
+        bool isInstalled = File.Exists(Path.Combine(Fonctions.GetUpGunPath(), newZipFileName + ".pak"));
+
+        var panel = new Panel
+        {
+            Name = $"pnlMod_{OwnerName}_{ModName}",
+            BackColor = Color.FromArgb(20, 22, 30),
+            Size = new Size(335, 100),
+            Padding = new Padding(10),
+            Margin = new Padding(5, 0, 5, 5),
+        };
+        
+        var picture = new PictureBox
+        {
+            Name = $"pictureBox_{OwnerName}",
+            ImageLocation = ImageUrl,
+            Location = new Point(10, 10),
+            Size = new Size(143, 80),
+            SizeMode = PictureBoxSizeMode.StretchImage,
+            TabStop = false
+        };
+
+        var lblName = new Label
+        {
+            Name = $"lblName_{OwnerName}",
+            AutoSize = true,
+            Font = new Font("Myanmar Text", 12f, FontStyle.Bold),
+            ForeColor = Color.White,
+            Location = new Point(195, 13),
+            Text = ModName
+        };
+
+        var lblCreator = new Label
+        {
+            Name = $"lblCreator_{OwnerName}",
+            AutoSize = true,
+            Font = new Font("Myanmar Text", 9f, FontStyle.Bold),
+            ForeColor = Color.White,
+            Location = new Point(195, 42),
+            Text = OwnerName
+        };
+
+        var lblType = new Label
+        {
+            Name = $"lblType_{OwnerName}",
+            AutoSize = true,
+            Font = new Font("Myanmar Text", 9f, FontStyle.Bold),
+            ForeColor = Color.White,
+            Location = new Point(195, 66),
+            Text = ModType
+        };
+
+        var SBDLSwitch = new SwitchButton
+        {
+            Name = $"switchButton_{OwnerName}",
+            AutoSize = true,
+            Location = new Point(239, 50),
+            MinimumSize = new Size(45, 22),
+            Size = new Size(45, 22),
+            OffBackColor = Color.Gray,
+            OffToggleColor = Color.Gainsboro,
+            OnBackColor = Color.FromArgb(0, 192, 0),
+            OnToggleColor = Color.WhiteSmoke,
+            Checked = isInstalled
+        };
+
+        SBDLSwitch.CheckedChanged += (s, e) =>
+        {
+            if (SBDLSwitch.Checked)
+            {
+                if (Fonctions.CheckIfModSupportInstalled())
+                {
+                    if (Process.GetProcessesByName("UpGun-Win64-Shipping").Length != 0)
+                    {
+                        Fonctions.ExecuteCmdCommand("taskkill /f /im UpGun-Win64-Shipping.exe");
+                        MessageBox.Show("UpGun.exe closed!");
+                    }
+                    Thread.Sleep(300);
+                    Fonctions.InstallMod(ModDLUrl, newZipFileName);
+                }
+            }
+            else
+            {
+                if (Fonctions.CheckIfModSupportInstalled())
+                {
+                    if (Process.GetProcessesByName("UpGun-Win64-Shipping").Length != 0)
+                    {
+                        Fonctions.ExecuteCmdCommand("taskkill /f /im UpGun-Win64-Shipping.exe");
+                        MessageBox.Show("UpGun.exe closed!");
+                    }
+                    Thread.Sleep(300);
+                    Fonctions.DeleteMod(newZipFileName);
+                }
+            }
+        };
+
+        panel.Controls.Add(SBDLSwitch);
+        panel.Controls.Add(lblType);
+        panel.Controls.Add(lblCreator);
+        panel.Controls.Add(lblName);
+        panel.Controls.Add(picture);
+
+        flpnlMods.Controls.Add(panel);
+        MakeRounded(panel, 18);
+        MakeRounded(picture, 18);
+    }
+
+    private void pbPreviousPage_Click(object sender, EventArgs e)
 	{
 		if (currentPage != 0)
 		{
@@ -363,7 +375,7 @@ public class UpGun_Mod_Loader : Form
 			_ = control;
 			num++;
 		}
-		if (num < 10)
+		if (num < 6)
 		{
 			MessageBox.Show("There is no more pages here!");
 			return;
@@ -381,592 +393,279 @@ public class UpGun_Mod_Loader : Form
 	private void ResetPageNum()
 	{
 		int num = currentPage + 1;
-		lblPageNum.Text = num.ToString();
+		lblPage.Text = num.ToString();
 	}
 
-	private void pbSettings_Click(object sender, EventArgs e)
-	{
-		Process.Start(Fonctions.path1);
-		MessageBox.Show("After editing the path in the text file, please restart the loader.");
-	}
-
-	private void pbUploadMod_Click(object sender, EventArgs e)
-	{
-		new Upload_Mod().Show();
-	}
-
-	private void pbYoutubeChannel_Click(object sender, EventArgs e)
-	{
-		Process.Start("https://www.youtube.com/channel/UCE2NKV2Rs-ag9M79hudMvog");
-	}
-
-	private void pbDiscordInvite_Click(object sender, EventArgs e)
-	{
-		Process.Start("https://discord.gg/B9tbZ9qv9e");
-	}
-
-	private async void btnSearch_Click(object sender, EventArgs e)
-	{
-		btnSearch.Enabled = false;
-		foreach (Control control in flpnlMods.Controls)
-		{
-			control.Dispose();
-		}
-		flpnlMods.Controls.Clear();
-		currentPage = 0;
-		ResetPageNum();
-		GetAllMods(await Fonctions.GetUploadedMods(), tbModSearch.Text, cbSearchModType.SelectedItem?.ToString());
-		btnSearch.Enabled = true;
-	}
-
-	private void pbUploadMod_MouseEnter(object sender, EventArgs e)
-	{
-		pbUploadMod.BackColor = Color.FromArgb(50, 50, 50);
-	}
-
-	private void pbUploadMod_MouseLeave(object sender, EventArgs e)
-	{
-		pbUploadMod.BackColor = Color.FromArgb(20, 20, 20);
-	}
-
-	private void pbDiscordInvite_MouseEnter(object sender, EventArgs e)
-	{
-		pbDiscordInvite.BackColor = Color.FromArgb(50, 50, 50);
-	}
-
-	private void pbDiscordInvite_MouseLeave(object sender, EventArgs e)
-	{
-		pbDiscordInvite.BackColor = Color.FromArgb(20, 20, 20);
-	}
-
-	private void pbYoutubeChannel_MouseEnter(object sender, EventArgs e)
-	{
-		pbYoutubeChannel.BackColor = Color.FromArgb(50, 50, 50);
-	}
-
-	private void pbYoutubeChannel_MouseLeave(object sender, EventArgs e)
-	{
-		pbYoutubeChannel.BackColor = Color.FromArgb(20, 20, 20);
-	}
-
-	private void pbPreviousPage_MouseEnter(object sender, EventArgs e)
-	{
-		pbPreviousPage.BackColor = Color.FromArgb(50, 50, 50);
-	}
-
-	private void pbPreviousPage_MouseLeave(object sender, EventArgs e)
-	{
-		pbPreviousPage.BackColor = Color.FromArgb(20, 20, 20);
-	}
-
-	private void pbNextPage_MouseEnter(object sender, EventArgs e)
-	{
-		pbNextPage.BackColor = Color.FromArgb(50, 50, 50);
-	}
-
-	private void pbNextPage_MouseLeave(object sender, EventArgs e)
-	{
-		pbNextPage.BackColor = Color.FromArgb(20, 20, 20);
-	}
-
-	private void btnSearch_MouseEnter(object sender, EventArgs e)
-	{
-		btnSearch.BackColor = Color.FromArgb(30, 30, 30);
-	}
-
-	private void btnSearch_MouseLeave(object sender, EventArgs e)
-	{
-		btnSearch.BackColor = Color.Black;
-	}
-
-	protected override void Dispose(bool disposing)
-	{
-		if (disposing && components != null)
-		{
-			components.Dispose();
-		}
-		base.Dispose(disposing);
-	}
+    private async void Search(object sender, EventArgs e)
+    {
+        if (!CanSearch)
+        {
+            MessageBox.Show("Please wait for the search to complete.");
+            return;
+        }
+        CanSearch = false;
+        foreach (Control control in flpnlMods.Controls)
+        {
+            control.Dispose();
+        }
+        flpnlMods.Controls.Clear();
+        currentPage = 0;
+        ResetPageNum();
+        GetAllMods(await Fonctions.GetUploadedMods(), tbSearchBar.Text, cbSearchTypes.SelectedItem?.ToString());
+        CanSearch = true;
+    }
 
 	private void InitializeComponent()
 	{
-		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpGunModLoader3._0.UpGun_Mod_Loader));
-		this.pnlTop = new System.Windows.Forms.Panel();
-		this.pbUpGunLogo = new System.Windows.Forms.PictureBox();
-		this.pnlc5 = new System.Windows.Forms.Panel();
-		this.pnlc6 = new System.Windows.Forms.Panel();
-		this.pnlTR = new System.Windows.Forms.Panel();
-		this.pnlc8 = new System.Windows.Forms.Panel();
-		this.pbUploadMod = new System.Windows.Forms.PictureBox();
-		this.pnlTL = new System.Windows.Forms.Panel();
-		this.pnlc16 = new System.Windows.Forms.Panel();
-		this.lblModNameResearch = new System.Windows.Forms.Label();
-		this.pnlc14 = new System.Windows.Forms.Panel();
-		this.tbModSearch = new System.Windows.Forms.TextBox();
-		this.pnlSearch2 = new System.Windows.Forms.Panel();
-		this.pnlc15 = new System.Windows.Forms.Panel();
-		this.lblModTypeResearch = new System.Windows.Forms.Label();
-		this.pnlc17 = new System.Windows.Forms.Panel();
-		this.cbSearchModType = new System.Windows.Forms.ComboBox();
-		this.pnlc21 = new System.Windows.Forms.Panel();
-		this.panel2 = new System.Windows.Forms.Panel();
-		this.btnSearch = new System.Windows.Forms.Button();
-		this.pnlc18 = new System.Windows.Forms.Panel();
-		this.pnlCredits = new System.Windows.Forms.Panel();
-		this.lblPageNum = new System.Windows.Forms.Label();
-		this.pnlc20 = new System.Windows.Forms.Panel();
-		this.pnlc19 = new System.Windows.Forms.Panel();
-		this.pbNextPage = new System.Windows.Forms.PictureBox();
-		this.pbPreviousPage = new System.Windows.Forms.PictureBox();
-		this.pnlcale = new System.Windows.Forms.Panel();
-		this.lblCopyright = new System.Windows.Forms.Label();
-		this.pnlc9 = new System.Windows.Forms.Panel();
-		this.pnlc4 = new System.Windows.Forms.Panel();
-		this.pnlc3 = new System.Windows.Forms.Panel();
-		this.pnlBR = new System.Windows.Forms.Panel();
-		this.pnlc12 = new System.Windows.Forms.Panel();
-		this.lblDiscordFeedback = new System.Windows.Forms.Label();
-		this.pnlc10 = new System.Windows.Forms.Panel();
-		this.pbDiscordInvite = new System.Windows.Forms.PictureBox();
-		this.pnlBL = new System.Windows.Forms.Panel();
-		this.pnlc13 = new System.Windows.Forms.Panel();
-		this.lblMadeBy = new System.Windows.Forms.Label();
-		this.pnlc11 = new System.Windows.Forms.Panel();
-		this.pbYoutubeChannel = new System.Windows.Forms.PictureBox();
-		this.pnlc1 = new System.Windows.Forms.Panel();
-		this.pnlc2 = new System.Windows.Forms.Panel();
-		this.flpnlMods = new System.Windows.Forms.FlowLayoutPanel();
-		this.pnlTop.SuspendLayout();
-		((System.ComponentModel.ISupportInitialize)this.pbUpGunLogo).BeginInit();
-		this.pnlTR.SuspendLayout();
-		((System.ComponentModel.ISupportInitialize)this.pbUploadMod).BeginInit();
-		this.pnlTL.SuspendLayout();
-		this.pnlSearch2.SuspendLayout();
-		this.panel2.SuspendLayout();
-		this.pnlCredits.SuspendLayout();
-		((System.ComponentModel.ISupportInitialize)this.pbNextPage).BeginInit();
-		((System.ComponentModel.ISupportInitialize)this.pbPreviousPage).BeginInit();
-		this.pnlcale.SuspendLayout();
-		this.pnlBR.SuspendLayout();
-		((System.ComponentModel.ISupportInitialize)this.pbDiscordInvite).BeginInit();
-		this.pnlBL.SuspendLayout();
-		((System.ComponentModel.ISupportInitialize)this.pbYoutubeChannel).BeginInit();
-		base.SuspendLayout();
-		this.pnlTop.BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-		this.pnlTop.Controls.Add(this.pbUpGunLogo);
-		this.pnlTop.Controls.Add(this.pnlc5);
-		this.pnlTop.Controls.Add(this.pnlc6);
-		this.pnlTop.Controls.Add(this.pnlTR);
-		this.pnlTop.Controls.Add(this.pnlTL);
-		this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
-		this.pnlTop.Location = new System.Drawing.Point(0, 0);
-		this.pnlTop.Name = "pnlTop";
-		this.pnlTop.Size = new System.Drawing.Size(710, 57);
-		this.pnlTop.TabIndex = 0;
-		this.pbUpGunLogo.Dock = System.Windows.Forms.DockStyle.Fill;
-		this.pbUpGunLogo.ErrorImage = null;
-		this.pbUpGunLogo.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/mm9pj2cuqya0yvmk43imb/UpGunLogo.png?rlkey=r4bfy2ee5gteq78ch04jgbfvc&st=hz1uydz4\r\n";
-		this.pbUpGunLogo.InitialImage = null;
-		this.pbUpGunLogo.Location = new System.Drawing.Point(384, 0);
-		this.pbUpGunLogo.Name = "pbUpGunLogo";
-		this.pbUpGunLogo.Size = new System.Drawing.Size(111, 57);
-		this.pbUpGunLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-		this.pbUpGunLogo.TabIndex = 8;
-		this.pbUpGunLogo.TabStop = false;
-		this.pnlc5.BackColor = System.Drawing.Color.Purple;
-		this.pnlc5.Dock = System.Windows.Forms.DockStyle.Left;
-		this.pnlc5.Location = new System.Drawing.Point(383, 0);
-		this.pnlc5.Name = "pnlc5";
-		this.pnlc5.Size = new System.Drawing.Size(1, 57);
-		this.pnlc5.TabIndex = 7;
-		this.pnlc6.BackColor = System.Drawing.Color.Purple;
-		this.pnlc6.Dock = System.Windows.Forms.DockStyle.Right;
-		this.pnlc6.Location = new System.Drawing.Point(495, 0);
-		this.pnlc6.Name = "pnlc6";
-		this.pnlc6.Size = new System.Drawing.Size(1, 57);
-		this.pnlc6.TabIndex = 6;
-		this.pnlTR.Controls.Add(this.pnlc8);
-		this.pnlTR.Controls.Add(this.pbUploadMod);
-		this.pnlTR.Dock = System.Windows.Forms.DockStyle.Right;
-		this.pnlTR.Location = new System.Drawing.Point(496, 0);
-		this.pnlTR.Name = "pnlTR";
-		this.pnlTR.Size = new System.Drawing.Size(214, 57);
-		this.pnlTR.TabIndex = 5;
-		this.pnlc8.BackColor = System.Drawing.Color.Purple;
-		this.pnlc8.Dock = System.Windows.Forms.DockStyle.Right;
-		this.pnlc8.Location = new System.Drawing.Point(156, 0);
-		this.pnlc8.Name = "pnlc8";
-		this.pnlc8.Size = new System.Drawing.Size(1, 57);
-		this.pnlc8.TabIndex = 2;
-		this.pbUploadMod.Cursor = System.Windows.Forms.Cursors.Hand;
-		this.pbUploadMod.Dock = System.Windows.Forms.DockStyle.Right;
-		this.pbUploadMod.ErrorImage = null;
-		this.pbUploadMod.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/cnhtcvlvus9pptd6d99ok/UploadLogo.png?rlkey=n06r10kqqow344aifar6fxqk0&st=rova85mw\r\n";
-		this.pbUploadMod.InitialImage = null;
-		this.pbUploadMod.Location = new System.Drawing.Point(157, 0);
-		this.pbUploadMod.Name = "pbUploadMod";
-		this.pbUploadMod.Size = new System.Drawing.Size(57, 57);
-		this.pbUploadMod.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-		this.pbUploadMod.TabIndex = 0;
-		this.pbUploadMod.TabStop = false;
-		this.pbUploadMod.Click += new System.EventHandler(pbUploadMod_Click);
-		this.pbUploadMod.MouseEnter += new System.EventHandler(pbUploadMod_MouseEnter);
-		this.pbUploadMod.MouseLeave += new System.EventHandler(pbUploadMod_MouseLeave);
-		this.pnlTL.Controls.Add(this.pnlc16);
-		this.pnlTL.Controls.Add(this.lblModNameResearch);
-		this.pnlTL.Controls.Add(this.pnlc14);
-		this.pnlTL.Controls.Add(this.tbModSearch);
-		this.pnlTL.Controls.Add(this.pnlSearch2);
-		this.pnlTL.Controls.Add(this.panel2);
-		this.pnlTL.Dock = System.Windows.Forms.DockStyle.Left;
-		this.pnlTL.Location = new System.Drawing.Point(0, 0);
-		this.pnlTL.Name = "pnlTL";
-		this.pnlTL.Size = new System.Drawing.Size(383, 57);
-		this.pnlTL.TabIndex = 4;
-		this.pnlc16.BackColor = System.Drawing.Color.Purple;
-		this.pnlc16.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.pnlc16.Location = new System.Drawing.Point(155, 19);
-		this.pnlc16.Name = "pnlc16";
-		this.pnlc16.Size = new System.Drawing.Size(160, 1);
-		this.pnlc16.TabIndex = 8;
-		this.lblModNameResearch.BackColor = System.Drawing.Color.FromArgb(5, 5, 5);
-		this.lblModNameResearch.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.lblModNameResearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-		this.lblModNameResearch.ForeColor = System.Drawing.Color.White;
-		this.lblModNameResearch.Location = new System.Drawing.Point(155, 20);
-		this.lblModNameResearch.Name = "lblModNameResearch";
-		this.lblModNameResearch.Size = new System.Drawing.Size(160, 16);
-		this.lblModNameResearch.TabIndex = 7;
-		this.lblModNameResearch.Text = "↓↓↓Mod name research↓↓↓";
-		this.lblModNameResearch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-		this.pnlc14.BackColor = System.Drawing.Color.Purple;
-		this.pnlc14.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.pnlc14.Location = new System.Drawing.Point(155, 36);
-		this.pnlc14.Name = "pnlc14";
-		this.pnlc14.Size = new System.Drawing.Size(160, 1);
-		this.pnlc14.TabIndex = 6;
-		this.tbModSearch.BackColor = System.Drawing.Color.Black;
-		this.tbModSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-		this.tbModSearch.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.tbModSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-		this.tbModSearch.ForeColor = System.Drawing.Color.White;
-		this.tbModSearch.Location = new System.Drawing.Point(155, 37);
-		this.tbModSearch.Name = "tbModSearch";
-		this.tbModSearch.Size = new System.Drawing.Size(160, 20);
-		this.tbModSearch.TabIndex = 5;
-		this.pnlSearch2.Controls.Add(this.pnlc15);
-		this.pnlSearch2.Controls.Add(this.lblModTypeResearch);
-		this.pnlSearch2.Controls.Add(this.pnlc17);
-		this.pnlSearch2.Controls.Add(this.cbSearchModType);
-		this.pnlSearch2.Controls.Add(this.pnlc21);
-		this.pnlSearch2.Dock = System.Windows.Forms.DockStyle.Left;
-		this.pnlSearch2.Location = new System.Drawing.Point(0, 0);
-		this.pnlSearch2.Name = "pnlSearch2";
-		this.pnlSearch2.Size = new System.Drawing.Size(155, 57);
-		this.pnlSearch2.TabIndex = 9;
-		this.pnlc15.BackColor = System.Drawing.Color.Purple;
-		this.pnlc15.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.pnlc15.Location = new System.Drawing.Point(0, 18);
-		this.pnlc15.Name = "pnlc15";
-		this.pnlc15.Size = new System.Drawing.Size(154, 1);
-		this.pnlc15.TabIndex = 7;
-		this.lblModTypeResearch.BackColor = System.Drawing.Color.FromArgb(5, 5, 5);
-		this.lblModTypeResearch.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.lblModTypeResearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-		this.lblModTypeResearch.ForeColor = System.Drawing.Color.White;
-		this.lblModTypeResearch.Location = new System.Drawing.Point(0, 19);
-		this.lblModTypeResearch.Name = "lblModTypeResearch";
-		this.lblModTypeResearch.Size = new System.Drawing.Size(154, 16);
-		this.lblModTypeResearch.TabIndex = 8;
-		this.lblModTypeResearch.Text = "↓↓↓Mod type research↓↓↓";
-		this.lblModTypeResearch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-		this.pnlc17.BackColor = System.Drawing.Color.Purple;
-		this.pnlc17.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.pnlc17.Location = new System.Drawing.Point(0, 35);
-		this.pnlc17.Name = "pnlc17";
-		this.pnlc17.Size = new System.Drawing.Size(154, 1);
-		this.pnlc17.TabIndex = 10;
-		this.cbSearchModType.BackColor = System.Drawing.Color.Black;
-		this.cbSearchModType.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.cbSearchModType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-		this.cbSearchModType.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-		this.cbSearchModType.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-		this.cbSearchModType.ForeColor = System.Drawing.Color.White;
-		this.cbSearchModType.FormattingEnabled = true;
-		this.cbSearchModType.Items.AddRange(new object[10] { "", "Map", "Gun Skin", "Cosmetic", "Player Model", "Settings", "Lobby Settings", "HUD", "Font", "Event" });
-		this.cbSearchModType.Location = new System.Drawing.Point(0, 36);
-		this.cbSearchModType.Name = "cbSearchModType";
-		this.cbSearchModType.Size = new System.Drawing.Size(154, 21);
-		this.cbSearchModType.TabIndex = 3;
-		this.pnlc21.BackColor = System.Drawing.Color.Purple;
-		this.pnlc21.Dock = System.Windows.Forms.DockStyle.Right;
-		this.pnlc21.Location = new System.Drawing.Point(154, 0);
-		this.pnlc21.Name = "pnlc21";
-		this.pnlc21.Size = new System.Drawing.Size(1, 57);
-		this.pnlc21.TabIndex = 11;
-		this.panel2.Controls.Add(this.btnSearch);
-		this.panel2.Controls.Add(this.pnlc18);
-		this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-		this.panel2.Location = new System.Drawing.Point(315, 0);
-		this.panel2.Name = "panel2";
-		this.panel2.Size = new System.Drawing.Size(68, 57);
-		this.panel2.TabIndex = 10;
-		this.btnSearch.BackColor = System.Drawing.Color.Black;
-		this.btnSearch.Cursor = System.Windows.Forms.Cursors.Hand;
-		this.btnSearch.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-		this.btnSearch.ForeColor = System.Drawing.Color.White;
-		this.btnSearch.Location = new System.Drawing.Point(1, 36);
-		this.btnSearch.Name = "btnSearch";
-		this.btnSearch.Size = new System.Drawing.Size(67, 21);
-		this.btnSearch.TabIndex = 4;
-		this.btnSearch.Text = "Search";
-		this.btnSearch.UseVisualStyleBackColor = false;
-		this.btnSearch.Click += new System.EventHandler(btnSearch_Click);
-		this.btnSearch.MouseEnter += new System.EventHandler(btnSearch_MouseEnter);
-		this.btnSearch.MouseLeave += new System.EventHandler(btnSearch_MouseLeave);
-		this.pnlc18.BackColor = System.Drawing.Color.Purple;
-		this.pnlc18.Dock = System.Windows.Forms.DockStyle.Left;
-		this.pnlc18.Location = new System.Drawing.Point(0, 0);
-		this.pnlc18.Name = "pnlc18";
-		this.pnlc18.Size = new System.Drawing.Size(1, 57);
-		this.pnlc18.TabIndex = 7;
-		this.pnlCredits.BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-		this.pnlCredits.Controls.Add(this.lblPageNum);
-		this.pnlCredits.Controls.Add(this.pnlc20);
-		this.pnlCredits.Controls.Add(this.pnlc19);
-		this.pnlCredits.Controls.Add(this.pbNextPage);
-		this.pnlCredits.Controls.Add(this.pbPreviousPage);
-		this.pnlCredits.Controls.Add(this.pnlcale);
-		this.pnlCredits.Controls.Add(this.pnlc4);
-		this.pnlCredits.Controls.Add(this.pnlc3);
-		this.pnlCredits.Controls.Add(this.pnlBR);
-		this.pnlCredits.Controls.Add(this.pnlBL);
-		this.pnlCredits.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.pnlCredits.Location = new System.Drawing.Point(0, 402);
-		this.pnlCredits.Name = "pnlCredits";
-		this.pnlCredits.Size = new System.Drawing.Size(710, 55);
-		this.pnlCredits.TabIndex = 1;
-		this.lblPageNum.Dock = System.Windows.Forms.DockStyle.Fill;
-		this.lblPageNum.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-		this.lblPageNum.ForeColor = System.Drawing.Color.White;
-		this.lblPageNum.Location = new System.Drawing.Point(326, 0);
-		this.lblPageNum.Name = "lblPageNum";
-		this.lblPageNum.Size = new System.Drawing.Size(58, 35);
-		this.lblPageNum.TabIndex = 7;
-		this.lblPageNum.Text = "1";
-		this.lblPageNum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-		this.pnlc20.BackColor = System.Drawing.Color.Purple;
-		this.pnlc20.Dock = System.Windows.Forms.DockStyle.Right;
-		this.pnlc20.Location = new System.Drawing.Point(384, 0);
-		this.pnlc20.Name = "pnlc20";
-		this.pnlc20.Size = new System.Drawing.Size(1, 35);
-		this.pnlc20.TabIndex = 9;
-		this.pnlc19.BackColor = System.Drawing.Color.Purple;
-		this.pnlc19.Dock = System.Windows.Forms.DockStyle.Left;
-		this.pnlc19.Location = new System.Drawing.Point(325, 0);
-		this.pnlc19.Name = "pnlc19";
-		this.pnlc19.Size = new System.Drawing.Size(1, 35);
-		this.pnlc19.TabIndex = 8;
-		this.pbNextPage.Cursor = System.Windows.Forms.Cursors.Hand;
-		this.pbNextPage.Dock = System.Windows.Forms.DockStyle.Right;
-		this.pbNextPage.ErrorImage = null;
-		this.pbNextPage.ImageLocation = "https://www.iconsdb.com/icons/preview/white/arrow-32-xxl.png";
-		this.pbNextPage.InitialImage = null;
-		this.pbNextPage.Location = new System.Drawing.Point(385, 0);
-		this.pbNextPage.Name = "pbNextPage";
-		this.pbNextPage.Size = new System.Drawing.Size(35, 35);
-		this.pbNextPage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-		this.pbNextPage.TabIndex = 6;
-		this.pbNextPage.TabStop = false;
-		this.pbNextPage.Click += new System.EventHandler(pbNextPage_Click);
-		this.pbNextPage.MouseEnter += new System.EventHandler(pbNextPage_MouseEnter);
-		this.pbNextPage.MouseLeave += new System.EventHandler(pbNextPage_MouseLeave);
-		this.pbPreviousPage.Cursor = System.Windows.Forms.Cursors.Hand;
-		this.pbPreviousPage.Dock = System.Windows.Forms.DockStyle.Left;
-		this.pbPreviousPage.ErrorImage = null;
-		this.pbPreviousPage.ImageLocation = "https://www.iconsdb.com/icons/preview/white/arrow-97-xxl.png";
-		this.pbPreviousPage.InitialImage = null;
-		this.pbPreviousPage.Location = new System.Drawing.Point(290, 0);
-		this.pbPreviousPage.Name = "pbPreviousPage";
-		this.pbPreviousPage.Size = new System.Drawing.Size(35, 35);
-		this.pbPreviousPage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-		this.pbPreviousPage.TabIndex = 5;
-		this.pbPreviousPage.TabStop = false;
-		this.pbPreviousPage.Click += new System.EventHandler(pbPreviousPage_Click);
-		this.pbPreviousPage.MouseEnter += new System.EventHandler(pbPreviousPage_MouseEnter);
-		this.pbPreviousPage.MouseLeave += new System.EventHandler(pbPreviousPage_MouseLeave);
-		this.pnlcale.Controls.Add(this.lblCopyright);
-		this.pnlcale.Controls.Add(this.pnlc9);
-		this.pnlcale.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.pnlcale.Location = new System.Drawing.Point(290, 35);
-		this.pnlcale.Name = "pnlcale";
-		this.pnlcale.Size = new System.Drawing.Size(130, 20);
-		this.pnlcale.TabIndex = 4;
-		this.lblCopyright.Dock = System.Windows.Forms.DockStyle.Fill;
-		this.lblCopyright.ForeColor = System.Drawing.Color.White;
-		this.lblCopyright.Location = new System.Drawing.Point(0, 1);
-		this.lblCopyright.Name = "lblCopyright";
-		this.lblCopyright.RightToLeft = System.Windows.Forms.RightToLeft.No;
-		this.lblCopyright.Size = new System.Drawing.Size(130, 19);
-		this.lblCopyright.TabIndex = 0;
-		this.lblCopyright.Text = "Copyright © 2023";
-		this.lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-		this.pnlc9.BackColor = System.Drawing.Color.Purple;
-		this.pnlc9.Dock = System.Windows.Forms.DockStyle.Top;
-		this.pnlc9.Location = new System.Drawing.Point(0, 0);
-		this.pnlc9.Name = "pnlc9";
-		this.pnlc9.Size = new System.Drawing.Size(130, 1);
-		this.pnlc9.TabIndex = 0;
-		this.pnlc4.BackColor = System.Drawing.Color.Purple;
-		this.pnlc4.Dock = System.Windows.Forms.DockStyle.Left;
-		this.pnlc4.Location = new System.Drawing.Point(289, 0);
-		this.pnlc4.Name = "pnlc4";
-		this.pnlc4.Size = new System.Drawing.Size(1, 55);
-		this.pnlc4.TabIndex = 3;
-		this.pnlc3.BackColor = System.Drawing.Color.Purple;
-		this.pnlc3.Dock = System.Windows.Forms.DockStyle.Right;
-		this.pnlc3.Location = new System.Drawing.Point(420, 0);
-		this.pnlc3.Name = "pnlc3";
-		this.pnlc3.Size = new System.Drawing.Size(1, 55);
-		this.pnlc3.TabIndex = 2;
-		this.pnlBR.Controls.Add(this.pnlc12);
-		this.pnlBR.Controls.Add(this.lblDiscordFeedback);
-		this.pnlBR.Controls.Add(this.pnlc10);
-		this.pnlBR.Controls.Add(this.pbDiscordInvite);
-		this.pnlBR.Dock = System.Windows.Forms.DockStyle.Right;
-		this.pnlBR.Location = new System.Drawing.Point(421, 0);
-		this.pnlBR.Name = "pnlBR";
-		this.pnlBR.Size = new System.Drawing.Size(289, 55);
-		this.pnlBR.TabIndex = 1;
-		this.pnlc12.BackColor = System.Drawing.Color.Purple;
-		this.pnlc12.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.pnlc12.Location = new System.Drawing.Point(0, 35);
-		this.pnlc12.Name = "pnlc12";
-		this.pnlc12.Size = new System.Drawing.Size(231, 1);
-		this.pnlc12.TabIndex = 6;
-		this.lblDiscordFeedback.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.lblDiscordFeedback.ForeColor = System.Drawing.Color.White;
-		this.lblDiscordFeedback.Location = new System.Drawing.Point(0, 36);
-		this.lblDiscordFeedback.Name = "lblDiscordFeedback";
-		this.lblDiscordFeedback.RightToLeft = System.Windows.Forms.RightToLeft.No;
-		this.lblDiscordFeedback.Size = new System.Drawing.Size(231, 19);
-		this.lblDiscordFeedback.TabIndex = 5;
-		this.lblDiscordFeedback.Text = "Send feedback on my discord :)";
-		this.lblDiscordFeedback.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-		this.pnlc10.BackColor = System.Drawing.Color.Purple;
-		this.pnlc10.Dock = System.Windows.Forms.DockStyle.Right;
-		this.pnlc10.Location = new System.Drawing.Point(231, 0);
-		this.pnlc10.Name = "pnlc10";
-		this.pnlc10.Size = new System.Drawing.Size(1, 55);
-		this.pnlc10.TabIndex = 4;
-		this.pbDiscordInvite.Cursor = System.Windows.Forms.Cursors.Hand;
-		this.pbDiscordInvite.Dock = System.Windows.Forms.DockStyle.Right;
-		this.pbDiscordInvite.ErrorImage = null;
-		this.pbDiscordInvite.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/ki51nywut66tj78uiipkn/DiscordLogo.png?rlkey=v18ao1qm003i4ophbqrud4dd1&st=6y2pr107\r\n";
-		this.pbDiscordInvite.InitialImage = null;
-		this.pbDiscordInvite.Location = new System.Drawing.Point(232, 0);
-		this.pbDiscordInvite.Name = "pbDiscordInvite";
-		this.pbDiscordInvite.Size = new System.Drawing.Size(57, 55);
-		this.pbDiscordInvite.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-		this.pbDiscordInvite.TabIndex = 3;
-		this.pbDiscordInvite.TabStop = false;
-		this.pbDiscordInvite.Click += new System.EventHandler(pbDiscordInvite_Click);
-		this.pbDiscordInvite.MouseEnter += new System.EventHandler(pbDiscordInvite_MouseEnter);
-		this.pbDiscordInvite.MouseLeave += new System.EventHandler(pbDiscordInvite_MouseLeave);
-		this.pnlBL.Controls.Add(this.pnlc13);
-		this.pnlBL.Controls.Add(this.lblMadeBy);
-		this.pnlBL.Controls.Add(this.pnlc11);
-		this.pnlBL.Controls.Add(this.pbYoutubeChannel);
-		this.pnlBL.Dock = System.Windows.Forms.DockStyle.Left;
-		this.pnlBL.Location = new System.Drawing.Point(0, 0);
-		this.pnlBL.Name = "pnlBL";
-		this.pnlBL.Size = new System.Drawing.Size(289, 55);
-		this.pnlBL.TabIndex = 0;
-		this.pnlc13.BackColor = System.Drawing.Color.Purple;
-		this.pnlc13.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.pnlc13.Location = new System.Drawing.Point(58, 35);
-		this.pnlc13.Name = "pnlc13";
-		this.pnlc13.Size = new System.Drawing.Size(231, 1);
-		this.pnlc13.TabIndex = 5;
-		this.lblMadeBy.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.lblMadeBy.ForeColor = System.Drawing.Color.White;
-		this.lblMadeBy.Location = new System.Drawing.Point(58, 36);
-		this.lblMadeBy.Name = "lblMadeBy";
-		this.lblMadeBy.RightToLeft = System.Windows.Forms.RightToLeft.No;
-		this.lblMadeBy.Size = new System.Drawing.Size(231, 19);
-		this.lblMadeBy.TabIndex = 4;
-		this.lblMadeBy.Text = "Made by FLIPPY";
-		this.lblMadeBy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-		this.pnlc11.BackColor = System.Drawing.Color.Purple;
-		this.pnlc11.Dock = System.Windows.Forms.DockStyle.Left;
-		this.pnlc11.Location = new System.Drawing.Point(57, 0);
-		this.pnlc11.Name = "pnlc11";
-		this.pnlc11.Size = new System.Drawing.Size(1, 55);
-		this.pnlc11.TabIndex = 3;
-		this.pbYoutubeChannel.Cursor = System.Windows.Forms.Cursors.Hand;
-		this.pbYoutubeChannel.Dock = System.Windows.Forms.DockStyle.Left;
-		this.pbYoutubeChannel.ErrorImage = null;
-		this.pbYoutubeChannel.ImageLocation = "https://dl.dropboxusercontent.com/scl/fi/wbv4ui1pb4spn8xkw7of3/YoutubeLogo.png?rlkey=rbcykzybsbe7mp0xj7es0ic2j&st=s6qd44hz\r\n";
-		this.pbYoutubeChannel.InitialImage = null;
-		this.pbYoutubeChannel.Location = new System.Drawing.Point(0, 0);
-		this.pbYoutubeChannel.Name = "pbYoutubeChannel";
-		this.pbYoutubeChannel.Size = new System.Drawing.Size(57, 55);
-		this.pbYoutubeChannel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-		this.pbYoutubeChannel.TabIndex = 2;
-		this.pbYoutubeChannel.TabStop = false;
-		this.pbYoutubeChannel.Click += new System.EventHandler(pbYoutubeChannel_Click);
-		this.pbYoutubeChannel.MouseEnter += new System.EventHandler(pbYoutubeChannel_MouseEnter);
-		this.pbYoutubeChannel.MouseLeave += new System.EventHandler(pbYoutubeChannel_MouseLeave);
-		this.pnlc1.BackColor = System.Drawing.Color.Purple;
-		this.pnlc1.Dock = System.Windows.Forms.DockStyle.Top;
-		this.pnlc1.Location = new System.Drawing.Point(0, 57);
-		this.pnlc1.Name = "pnlc1";
-		this.pnlc1.Size = new System.Drawing.Size(710, 1);
-		this.pnlc1.TabIndex = 2;
-		this.pnlc2.BackColor = System.Drawing.Color.Purple;
-		this.pnlc2.Dock = System.Windows.Forms.DockStyle.Bottom;
-		this.pnlc2.Location = new System.Drawing.Point(0, 401);
-		this.pnlc2.Name = "pnlc2";
-		this.pnlc2.Size = new System.Drawing.Size(710, 1);
-		this.pnlc2.TabIndex = 3;
-		this.flpnlMods.AutoScroll = true;
-		this.flpnlMods.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
-		this.flpnlMods.Dock = System.Windows.Forms.DockStyle.Fill;
-		this.flpnlMods.Location = new System.Drawing.Point(0, 58);
-		this.flpnlMods.Name = "flpnlMods";
-		this.flpnlMods.Size = new System.Drawing.Size(710, 343);
-		this.flpnlMods.TabIndex = 4;
-		base.AutoScaleDimensions = new System.Drawing.SizeF(6f, 13f);
-		base.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-		this.BackColor = System.Drawing.Color.FromArgb(10, 10, 10);
-		base.ClientSize = new System.Drawing.Size(710, 457);
-		base.Controls.Add(this.flpnlMods);
-		base.Controls.Add(this.pnlc2);
-		base.Controls.Add(this.pnlc1);
-		base.Controls.Add(this.pnlCredits);
-		base.Controls.Add(this.pnlTop);
-		base.Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
-		this.MaximumSize = new System.Drawing.Size(726, 496);
-		this.MinimumSize = new System.Drawing.Size(726, 496);
-		base.Name = "UpGun_Mod_Loader";
-		this.Text = "Mod Loader";
-		this.pnlTop.ResumeLayout(false);
-		((System.ComponentModel.ISupportInitialize)this.pbUpGunLogo).EndInit();
-		this.pnlTR.ResumeLayout(false);
-		((System.ComponentModel.ISupportInitialize)this.pbUploadMod).EndInit();
-		this.pnlTL.ResumeLayout(false);
-		this.pnlTL.PerformLayout();
-		this.pnlSearch2.ResumeLayout(false);
-		this.panel2.ResumeLayout(false);
-		this.pnlCredits.ResumeLayout(false);
-		((System.ComponentModel.ISupportInitialize)this.pbNextPage).EndInit();
-		((System.ComponentModel.ISupportInitialize)this.pbPreviousPage).EndInit();
-		this.pnlcale.ResumeLayout(false);
-		this.pnlBR.ResumeLayout(false);
-		((System.ComponentModel.ISupportInitialize)this.pbDiscordInvite).EndInit();
-		this.pnlBL.ResumeLayout(false);
-		((System.ComponentModel.ISupportInitialize)this.pbYoutubeChannel).EndInit();
-		base.ResumeLayout(false);
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpGun_Mod_Loader));
+        this.pnlTitle = new System.Windows.Forms.Panel();
+        this.pbLogo = new System.Windows.Forms.PictureBox();
+        this.btnReduce = new System.Windows.Forms.Button();
+        this.pnlClose = new System.Windows.Forms.Panel();
+        this.btnClose = new System.Windows.Forms.Button();
+        this.pnlTitleText = new System.Windows.Forms.Panel();
+        this.lblTitle = new System.Windows.Forms.Label();
+        this.btnNext = new System.Windows.Forms.Button();
+        this.lblPage = new System.Windows.Forms.Label();
+        this.btnPrevious = new System.Windows.Forms.Button();
+        this.pnlPages = new System.Windows.Forms.Panel();
+        this.pnlSearch = new System.Windows.Forms.Panel();
+        this.tbSearchBar = new System.Windows.Forms.TextBox();
+        this.cbSearchTypes = new DarkComboBox();
+        this.flpnlMods = new System.Windows.Forms.FlowLayoutPanel();
+        this.pnlTitle.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
+        this.pnlClose.SuspendLayout();
+        this.pnlTitleText.SuspendLayout();
+        this.pnlSearch.SuspendLayout();
+        this.SuspendLayout();
+        // 
+        // pnlTitle
+        // 
+        this.pnlTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(29)))));
+        this.pnlTitle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+        this.pnlTitle.Controls.Add(this.pbLogo);
+        this.pnlTitle.Controls.Add(this.btnReduce);
+        this.pnlTitle.Controls.Add(this.pnlClose);
+        this.pnlTitle.Controls.Add(this.pnlTitleText);
+        this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
+        this.pnlTitle.Location = new System.Drawing.Point(0, 0);
+        this.pnlTitle.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+        this.pnlTitle.Name = "pnlTitle";
+        this.pnlTitle.Size = new System.Drawing.Size(720, 35);
+        this.pnlTitle.TabIndex = 0;
+        // 
+        // pbLogo
+        // 
+        this.pbLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbLogo.Image")));
+        this.pbLogo.Location = new System.Drawing.Point(20, 3);
+        this.pbLogo.Name = "pbLogo";
+        this.pbLogo.Size = new System.Drawing.Size(35, 35);
+        this.pbLogo.TabIndex = 3;
+        this.pbLogo.TabStop = false;
+        // 
+        // btnReduce
+        // 
+        this.btnReduce.BackColor = System.Drawing.Color.Transparent;
+        this.btnReduce.FlatAppearance.BorderSize = 0;
+        this.btnReduce.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
+        this.btnReduce.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        this.btnReduce.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.btnReduce.ForeColor = System.Drawing.Color.White;
+        this.btnReduce.Location = new System.Drawing.Point(649, 0);
+        this.btnReduce.Name = "btnReduce";
+        this.btnReduce.Size = new System.Drawing.Size(35, 35);
+        this.btnReduce.TabIndex = 1;
+        this.btnReduce.Text = "—";
+        this.btnReduce.UseVisualStyleBackColor = false;
+        // 
+        // pnlClose
+        // 
+        this.pnlClose.Controls.Add(this.btnClose);
+        this.pnlClose.Location = new System.Drawing.Point(685, 0);
+        this.pnlClose.Name = "pnlClose";
+        this.pnlClose.Size = new System.Drawing.Size(35, 35);
+        this.pnlClose.TabIndex = 2;
+        // 
+        // btnClose
+        // 
+        this.btnClose.BackColor = System.Drawing.Color.Transparent;
+        this.btnClose.FlatAppearance.BorderSize = 0;
+        this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+        this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.btnClose.ForeColor = System.Drawing.Color.White;
+        this.btnClose.Location = new System.Drawing.Point(0, 0);
+        this.btnClose.Name = "btnClose";
+        this.btnClose.Size = new System.Drawing.Size(35, 35);
+        this.btnClose.TabIndex = 0;
+        this.btnClose.Text = "X";
+        this.btnClose.UseVisualStyleBackColor = false;
+        // 
+        // pnlTitleText
+        // 
+        this.pnlTitleText.Controls.Add(this.lblTitle);
+        this.pnlTitleText.Location = new System.Drawing.Point(40, 0);
+        this.pnlTitleText.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+        this.pnlTitleText.Name = "pnlTitleText";
+        this.pnlTitleText.Size = new System.Drawing.Size(200, 35);
+        this.pnlTitleText.TabIndex = 1;
+        // 
+        // lblTitle
+        // 
+        this.lblTitle.BackColor = System.Drawing.Color.Transparent;
+        this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.lblTitle.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.lblTitle.ForeColor = System.Drawing.Color.White;
+        this.lblTitle.Location = new System.Drawing.Point(0, 0);
+        this.lblTitle.Margin = new System.Windows.Forms.Padding(0);
+        this.lblTitle.Name = "lblTitle";
+        this.lblTitle.Size = new System.Drawing.Size(200, 35);
+        this.lblTitle.TabIndex = 0;
+        this.lblTitle.Text = "UpGun Mod Loader";
+        this.lblTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+        this.lblTitle.UseMnemonic = false;
+        // 
+        // btnNext
+        // 
+        this.btnNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+        this.btnNext.FlatAppearance.BorderSize = 0;
+        this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        this.btnNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.btnNext.ForeColor = System.Drawing.Color.White;
+        this.btnNext.Location = new System.Drawing.Point(377, 419);
+        this.btnNext.Name = "btnNext";
+        this.btnNext.Size = new System.Drawing.Size(40, 40);
+        this.btnNext.TabIndex = 1;
+        this.btnNext.Text = ">";
+        this.btnNext.UseVisualStyleBackColor = false;
+        // 
+        // lblPage
+        // 
+        this.lblPage.AutoSize = true;
+        this.lblPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+        this.lblPage.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Bold);
+        this.lblPage.ForeColor = System.Drawing.Color.White;
+        this.lblPage.Location = new System.Drawing.Point(349, 430);
+        this.lblPage.Name = "lblPage";
+        this.lblPage.Size = new System.Drawing.Size(22, 29);
+        this.lblPage.TabIndex = 2;
+        this.lblPage.Text = "1";
+        this.lblPage.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+        // 
+        // btnPrevious
+        // 
+        this.btnPrevious.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+        this.btnPrevious.FlatAppearance.BorderSize = 0;
+        this.btnPrevious.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        this.btnPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.btnPrevious.ForeColor = System.Drawing.Color.White;
+        this.btnPrevious.Location = new System.Drawing.Point(303, 419);
+        this.btnPrevious.Name = "btnPrevious";
+        this.btnPrevious.Size = new System.Drawing.Size(40, 40);
+        this.btnPrevious.TabIndex = 3;
+        this.btnPrevious.Text = "<";
+        this.btnPrevious.UseVisualStyleBackColor = false;
+        // 
+        // pnlPages
+        // 
+        this.pnlPages.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+        this.pnlPages.Location = new System.Drawing.Point(303, 419);
+        this.pnlPages.Name = "pnlPages";
+        this.pnlPages.Size = new System.Drawing.Size(114, 40);
+        this.pnlPages.TabIndex = 4;
+        // 
+        // pnlSearch
+        // 
+        this.pnlSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+        this.pnlSearch.Controls.Add(this.tbSearchBar);
+        this.pnlSearch.Controls.Add(this.cbSearchTypes);
+        this.pnlSearch.Location = new System.Drawing.Point(160, 50);
+        this.pnlSearch.Name = "pnlSearch";
+        this.pnlSearch.Size = new System.Drawing.Size(399, 40);
+        this.pnlSearch.TabIndex = 5;
+        // 
+        // tbSearchBar
+        // 
+        this.tbSearchBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+        this.tbSearchBar.BorderStyle = System.Windows.Forms.BorderStyle.None;
+        this.tbSearchBar.Font = new System.Drawing.Font("Myanmar Text", 8.25F, System.Drawing.FontStyle.Bold);
+        this.tbSearchBar.ForeColor = System.Drawing.Color.White;
+        this.tbSearchBar.Location = new System.Drawing.Point(193, 11);
+        this.tbSearchBar.Name = "tbSearchBar";
+        this.tbSearchBar.Size = new System.Drawing.Size(190, 21);
+        this.tbSearchBar.TabIndex = 1;
+        this.tbSearchBar.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+        // 
+        // cbSearchTypes
+        // 
+        this.cbSearchTypes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+        this.cbSearchTypes.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(65)))), ((int)(((byte)(75)))));
+        this.cbSearchTypes.ButtonWidth = 24;
+        this.cbSearchTypes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+        this.cbSearchTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+        this.cbSearchTypes.DropDownWidth = 173;
+        this.cbSearchTypes.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+        this.cbSearchTypes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        this.cbSearchTypes.Font = new System.Drawing.Font("Myanmar Text", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        this.cbSearchTypes.ForeColor = System.Drawing.Color.White;
+        this.cbSearchTypes.FormattingEnabled = true;
+        this.cbSearchTypes.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(38)))), ((int)(((byte)(48)))));
+        this.cbSearchTypes.Items.AddRange(new object[] {
+        "All",
+        "Map",
+        "Gun Skin",
+        "Cosmetic",
+        "Player Model",
+        "Settings",
+        "Lobby Settings",
+        "HUD",
+        "Font",
+        "Event"});
+        this.cbSearchTypes.Location = new System.Drawing.Point(10, 6);
+        this.cbSearchTypes.Name = "cbSearchTypes";
+        this.cbSearchTypes.Radius = 6;
+        this.cbSearchTypes.Size = new System.Drawing.Size(173, 28);
+        this.cbSearchTypes.SelectedIndex = 0;
+        this.cbSearchTypes.TextColor = System.Drawing.Color.White;
+        this.cbSearchTypes.DrawMode = DrawMode.OwnerDrawFixed;
+        this.cbSearchTypes.DropDownStyle = ComboBoxStyle.DropDownList;
+        this.cbSearchTypes.IntegralHeight = false;
+        // 
+        // flpnlMods
+        // 
+        this.flpnlMods.Location = new System.Drawing.Point(10, 97);
+        this.flpnlMods.Name = "flpnlMods";
+        this.flpnlMods.Padding = new System.Windows.Forms.Padding(5);
+        this.flpnlMods.Size = new System.Drawing.Size(700, 316);
+        this.flpnlMods.TabIndex = 6;
+        // 
+        // UpGun_Mod_Loader
+        // 
+        this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+        this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(17)))), ((int)(((byte)(27)))));
+        this.ClientSize = new System.Drawing.Size(720, 470);
+        this.Controls.Add(this.flpnlMods);
+        this.Controls.Add(this.pnlSearch);
+        this.Controls.Add(this.btnPrevious);
+        this.Controls.Add(this.lblPage);
+        this.Controls.Add(this.btnNext);
+        this.Controls.Add(this.pnlPages);
+        this.Controls.Add(this.pnlTitle);
+        this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+        this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+        this.MaximumSize = new System.Drawing.Size(720, 470);
+        this.MinimumSize = new System.Drawing.Size(720, 470);
+        this.Name = "UpGun_Mod_Loader";
+        this.Text = "Mod Loader";
+        this.pnlTitle.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
+        this.pnlClose.ResumeLayout(false);
+        this.pnlTitleText.ResumeLayout(false);
+        this.pnlSearch.ResumeLayout(false);
+        this.pnlSearch.PerformLayout();
+        this.ResumeLayout(false);
+        this.PerformLayout();
 	}
 }

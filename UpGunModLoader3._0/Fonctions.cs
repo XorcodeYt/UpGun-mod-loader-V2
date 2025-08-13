@@ -86,38 +86,79 @@ internal class Fonctions
 		return null;
 	}
 
-	public static void DeleteMod(string ModName)
-	{
-		File.Delete(GetUpGunPath() + "\\" + ModName + ".pak");
-		if (Directory.Exists(appdatapath3 + "\\" + ModName))
-		{
-			Directory.Delete(appdatapath3 + "\\" + ModName, recursive: true);
-			ResetBinFile();
-			ReinstallAllMods();
-			RepakTheNewBinFile();
-		}
-	}
-
-	public static void InstallMod(string URL, string Name)
-	{
-		string text = appdatapath3 + "\\" + Name;
-		new WebClient().DownloadFile(URL, text + ".zip");
-		Thread.Sleep(200);
-        if (Directory.Exists(text))
+    public static void DeleteMod(string ModName)
+    {
+        using (SplashManager.Scope("Deleting mod..."))
         {
-            Directory.Delete(text, recursive: true);
-        }
-        ZipFile.ExtractToDirectory(text + ".zip", appdatapath3);
-		File.Delete(text + ".zip");
-		File.Move(text + ".pak", GetUpGunPath() + "\\" + Name + ".pak");
-		if (Directory.Exists(text))
-		{
-			InjectJsonCode(text);
-			RepakTheNewBinFile();
-		}
-	}
+            File.Delete(GetUpGunPath() + "\\" + ModName + ".pak");
+            File.Delete(GetUpGunPath() + "\\" + ModName + ".sig");
 
-	public static void InjectJsonCode(string FolderJsonToInject)
+            if (Directory.Exists(appdatapath3 + "\\" + ModName))
+            {
+                SplashManager.Update("Cleaning local mod folder...");
+                Directory.Delete(appdatapath3 + "\\" + ModName, recursive: true);
+
+                SplashManager.Update("Resetting AssetRegistry...");
+                ResetBinFile();
+
+                SplashManager.Update("Reinstalling all mods...");
+                ReinstallAllMods();
+
+                SplashManager.Update("Repacking AssetRegistry...");
+                RepakTheNewBinFile();
+            }
+        }
+    }
+
+    public static void CreateSig(string pakname)
+    {
+        string originalSig = Path.Combine(Path.GetDirectoryName(PakGameFilePath), "UpGun-WindowsNoEditor.sig");
+
+        string newSig = Path.Combine(Path.GetDirectoryName(PakGameFilePath), pakname + ".sig");
+
+        if (!File.Exists(originalSig))
+        {
+            throw new FileNotFoundException("Le fichier .sig original est introuvable", originalSig);
+        }
+
+        File.Copy(originalSig, newSig, overwrite: true);
+    }
+
+
+    public static void InstallMod(string URL, string Name)
+    {
+        using (SplashManager.Scope("Downloading mod..."))
+        {
+            string text = appdatapath3 + "\\" + Name;
+
+            new WebClient().DownloadFile(URL, text + ".zip");
+            Thread.Sleep(200);
+
+            SplashManager.Update("Extracting files...");
+            if (Directory.Exists(text))
+            {
+                Directory.Delete(text, recursive: true);
+            }
+            ZipFile.ExtractToDirectory(text + ".zip", appdatapath3);
+
+            SplashManager.Update("Moving .pak to UpGun folder...");
+            File.Delete(text + ".zip");
+            File.Move(text + ".pak", GetUpGunPath() + "\\" + Name + ".pak");
+			CreateSig(Name);
+
+            if (Directory.Exists(text))
+            {
+                SplashManager.Update("Injecting JSON code...");
+                InjectJsonCode(text);
+
+                SplashManager.Update("Repacking AssetRegistry...");
+                RepakTheNewBinFile();
+            }
+        }
+    }
+
+
+    public static void InjectJsonCode(string FolderJsonToInject)
 	{
 		try
 		{
@@ -161,29 +202,37 @@ internal class Fonctions
 
     public static void InstallModsSupport()
     {
-        if (Process.GetProcessesByName("UpGun-Win64-Shipping").Length != 0)
+        using (SplashManager.Scope("Installation of the mods support... (you can take a coffee)"))
         {
-            ExecuteCmdCommand("taskkill /f /im UpGun-Win64-Shipping.exe");
+            if (Process.GetProcessesByName("UpGun-Win64-Shipping").Length != 0)
+            {
+                SplashManager.Update("Closing UpGun...");
+                ExecuteCmdCommand("taskkill /f /im UpGun-Win64-Shipping.exe");
+            }
+
+            Thread.Sleep(300);
+
+            string quotedPath2 = $"\"{path2}\"";
+
+            SplashManager.Update("Unpacking base game pak...");
+            ExecuteCmdCommand($"{quotedPath2} --aes-key {AESKey} unpack \"{PakGameFilePath}\"");
+            File.Delete(PakGameFilePath);
+
+            SplashManager.Update("Moving AssetRegistry.bin...");
+            Directory.CreateDirectory(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\\UpGun");
+            File.Move(GetUpGunPath() + "\\UpGun-WindowsNoEditor\\UpGun\\AssetRegistry.bin", ARPath);
+
+            SplashManager.Update("Repacking game content...");
+            ExecuteCmdCommand($"{quotedPath2} pack \"{GetUpGunPath()}\\UpGun-WindowsNoEditor\"");
+            ExecuteCmdCommand($"{quotedPath2} pack \"{GetUpGunPath()}\\UpGun-WindowsNoEditor_AssetRegistry\"");
+			CreateSig("UpGun-WindowsNoEditor_AssetRegistry");
+
+            SplashManager.Update("Cleaning & backup...");
+            Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor", recursive: true);
+            File.Copy(ARPath, GetUpGunPath() + "\\AssetRegistry.bak");
         }
-        Thread.Sleep(300);
-        Notif("Installation of the mods support... (you can take a coffee)", 3);
-
-        string quotedPath2 = $"\"{path2}\"";
-
-        ExecuteCmdCommand($"{quotedPath2} --aes-key {AESKey} unpack \"{PakGameFilePath}\"");
-        File.Delete(PakGameFilePath);
-
-        Directory.CreateDirectory(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\\UpGun");
-        File.Move(GetUpGunPath() + "\\UpGun-WindowsNoEditor\\UpGun\\AssetRegistry.bin", ARPath);
-
-        ExecuteCmdCommand($"{quotedPath2} pack \"{GetUpGunPath()}\\UpGun-WindowsNoEditor\"");
-        ExecuteCmdCommand($"{quotedPath2} pack \"{GetUpGunPath()}\\UpGun-WindowsNoEditor_AssetRegistry\"");
-
-        Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor", recursive: true);
-        File.Copy(ARPath, GetUpGunPath() + "\\AssetRegistry.bak");
-
-        Notif("The mods support is installed.", 3);
     }
+
 
 
     public static void RepakTheNewBinFile()
@@ -202,32 +251,46 @@ internal class Fonctions
 		ExecuteCmdCommand($"{quotedPath2} pack \"" + GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\"");
 	}
 
-	public static void MajModLoaderUpGun()
-	{
-        string quotedPath2 = $"\"{path2}\"";
-        Notif("Checking if latest version of mod support is installed.", 1);
-		ExecuteCmdCommand($"{quotedPath2} --aes-key " + AESKey + " unpack \"" + PakGameFilePath + "\"");
-		if (File.Exists(GetUpGunPath() + "\\UpGun-WindowsNoEditor\\UpGun\\AssetRegistry.bin"))
-		{
-			Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor", recursive: true);
-			File.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry.pak");
-			File.Delete(GetUpGunPath() + "\\AssetRegistry.bak");
-			Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry", recursive: true);
-			InstallModsSupport();
-			ReinstallAllMods();
-			RepakTheNewBinFile();
-		}
-		else
-		{
-			if (Directory.Exists(GetUpGunPath() + "\\UpGun-WindowsNoEditor"))
-			{
-                Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor", recursive: true);
-            }
-            Notif("Latest mods support is already installed!", 1);
-		}
-	}
+    public static void MajModLoaderUpGun()
+    {
+        using (SplashManager.Scope("Checking if latest version of mod support is installed..."))
+        {
+            string quotedPath2 = $"\"{path2}\"";
 
-	public static void ExecuteCmdCommand(string cmdCommand)
+            SplashManager.Update("Unpacking current pak for verification...");
+            ExecuteCmdCommand($"{quotedPath2} --aes-key " + AESKey + " unpack \"" + PakGameFilePath + "\"");
+
+            if (File.Exists(GetUpGunPath() + "\\UpGun-WindowsNoEditor\\UpGun\\AssetRegistry.bin"))
+            {
+                SplashManager.Update("Old support detected. Cleaning...");
+                Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor", recursive: true);
+                File.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry.pak");
+                File.Delete(GetUpGunPath() + "\\AssetRegistry.bak");
+                Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry", recursive: true);
+
+                SplashManager.Update("Reinstalling mod support...");
+                InstallModsSupport();
+
+                SplashManager.Update("Reinstalling all mods...");
+                ReinstallAllMods();
+
+                SplashManager.Update("Repacking AssetRegistry...");
+                RepakTheNewBinFile();
+            }
+            else
+            {
+                SplashManager.Update("Latest mods support already installed.");
+                if (Directory.Exists(GetUpGunPath() + "\\UpGun-WindowsNoEditor"))
+                {
+                    SplashManager.Update("Cleaning temporary folder...");
+                    Directory.Delete(GetUpGunPath() + "\\UpGun-WindowsNoEditor", recursive: true);
+                }
+            }
+        }
+    }
+
+
+    public static void ExecuteCmdCommand(string cmdCommand)
 	{
 		ProcessStartInfo startInfo = new ProcessStartInfo
 		{

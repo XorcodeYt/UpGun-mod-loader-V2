@@ -2,6 +2,9 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="CustomControls.RJControls\DarkComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="CustomControls.RJControls\SwitchButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -14,5 +17,13 @@
     <Compile Update="UpGun_Mod_Loader.Autres\Notifs.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="UpGun_Mod_Loader.Autres\SplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="UpGun_Mod_Loader.Autres.Notifs.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
