@@ -78,7 +78,7 @@ internal class Fonctions
 
 	public static async Task<string> GetWHLink()
 	{
-		HttpResponseMessage val = await new HttpClient().GetAsync("https://dl.dropboxusercontent.com/scl/fi/du7fkui6oxv5juai4uy99/WebhookLink.txt?rlkey=26cqum86x0xenbh3x5kp2dp9g&st=65xsw56b\r\n");
+		HttpResponseMessage val = await new HttpClient().GetAsync("http://144.24.205.218:8000/file/WebhookLink.txt\r\n");
 		if (val.IsSuccessStatusCode)
 		{
 			return (await val.Content.ReadAsStringAsync()).ToString();
@@ -312,7 +312,7 @@ internal class Fonctions
 
 	public static async Task<string> GetUploadedMods()
 	{
-		string text = "https://dl.dropboxusercontent.com/scl/fi/18futzperhh6v8ynz06hs/Mods.txt?rlkey=j6h086tbhd3dgutmgmuw013e0&st=oj5edc3s";
+		string text = "http://144.24.205.218:8000/file/mods.txt";
 		HttpClient httpClient = new HttpClient();
 		try
 		{
