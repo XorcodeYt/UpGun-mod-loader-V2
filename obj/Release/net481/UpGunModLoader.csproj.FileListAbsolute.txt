@@ -16,3 +16,4 @@ C:\Users\Noah Perso\Documents\GitHub\FLIPPY-MOD-LOADER\obj\Release\net481\UpGunM
 C:\Users\Noah Perso\Documents\GitHub\FLIPPY-MOD-LOADER\obj\Release\net481\UpGunModLoader.exe
 C:\Users\Noah Perso\Documents\GitHub\FLIPPY-MOD-LOADER\obj\Release\net481\UpGunModLoader.pdb
 C:\Users\Noah Perso\Documents\GitHub\FLIPPY-MOD-LOADER\obj\Release\net481\UpGunModLoader.exe.config
+C:\Users\Noah Perso\Documents\GitHub\FLIPPY-MOD-LOADER\obj\Release\net481\UpGun_Mod_Loader.Autres.SplashScreen.resources

@@ -63,6 +63,16 @@ internal class UpGun_Mod_Loader_Autres_Notifs {
     /// <summary>
     ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
     /// </summary>
+    internal static System.Drawing.Bitmap DiscordLogo {
+        get {
+            object obj = ResourceManager.GetObject("DiscordLogo", resourceCulture);
+            return ((System.Drawing.Bitmap)(obj));
+        }
+    }
+    
+    /// <summary>
+    ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+    /// </summary>
     internal static System.Drawing.Bitmap logo {
         get {
             object obj = ResourceManager.GetObject("logo", resourceCulture);
@@ -76,6 +86,16 @@ internal class UpGun_Mod_Loader_Autres_Notifs {
     internal static System.Drawing.Bitmap logo_30 {
         get {
             object obj = ResourceManager.GetObject("logo 30", resourceCulture);
+            return ((System.Drawing.Bitmap)(obj));
+        }
+    }
+    
+    /// <summary>
+    ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+    /// </summary>
+    internal static System.Drawing.Bitmap logo93 {
+        get {
+            object obj = ResourceManager.GetObject("logo93", resourceCulture);
             return ((System.Drawing.Bitmap)(obj));
         }
     }

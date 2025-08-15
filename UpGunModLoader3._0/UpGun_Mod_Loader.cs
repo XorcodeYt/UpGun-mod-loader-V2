@@ -41,6 +41,7 @@ public class UpGun_Mod_Loader : Form
     private TextBox tbSearchBar;
     private FlowLayoutPanel flpnlMods;
     private IContainer components;
+    private Button button1;
     private bool CanSearch = true;
 
     public UpGun_Mod_Loader()
@@ -417,255 +418,287 @@ public class UpGun_Mod_Loader : Form
 
 	private void InitializeComponent()
 	{
-        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpGun_Mod_Loader));
-        this.pnlTitle = new System.Windows.Forms.Panel();
-        this.pbLogo = new System.Windows.Forms.PictureBox();
-        this.btnReduce = new System.Windows.Forms.Button();
-        this.pnlClose = new System.Windows.Forms.Panel();
-        this.btnClose = new System.Windows.Forms.Button();
-        this.pnlTitleText = new System.Windows.Forms.Panel();
-        this.lblTitle = new System.Windows.Forms.Label();
-        this.btnNext = new System.Windows.Forms.Button();
-        this.lblPage = new System.Windows.Forms.Label();
-        this.btnPrevious = new System.Windows.Forms.Button();
-        this.pnlPages = new System.Windows.Forms.Panel();
-        this.pnlSearch = new System.Windows.Forms.Panel();
-        this.tbSearchBar = new System.Windows.Forms.TextBox();
-        this.cbSearchTypes = new DarkComboBox();
-        this.flpnlMods = new System.Windows.Forms.FlowLayoutPanel();
-        this.pnlTitle.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
-        this.pnlClose.SuspendLayout();
-        this.pnlTitleText.SuspendLayout();
-        this.pnlSearch.SuspendLayout();
-        this.SuspendLayout();
-        // 
-        // pnlTitle
-        // 
-        this.pnlTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(29)))));
-        this.pnlTitle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-        this.pnlTitle.Controls.Add(this.pbLogo);
-        this.pnlTitle.Controls.Add(this.btnReduce);
-        this.pnlTitle.Controls.Add(this.pnlClose);
-        this.pnlTitle.Controls.Add(this.pnlTitleText);
-        this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
-        this.pnlTitle.Location = new System.Drawing.Point(0, 0);
-        this.pnlTitle.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-        this.pnlTitle.Name = "pnlTitle";
-        this.pnlTitle.Size = new System.Drawing.Size(720, 35);
-        this.pnlTitle.TabIndex = 0;
-        // 
-        // pbLogo
-        // 
-        this.pbLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbLogo.Image")));
-        this.pbLogo.Location = new System.Drawing.Point(20, 3);
-        this.pbLogo.Name = "pbLogo";
-        this.pbLogo.Size = new System.Drawing.Size(35, 35);
-        this.pbLogo.TabIndex = 3;
-        this.pbLogo.TabStop = false;
-        // 
-        // btnReduce
-        // 
-        this.btnReduce.BackColor = System.Drawing.Color.Transparent;
-        this.btnReduce.FlatAppearance.BorderSize = 0;
-        this.btnReduce.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
-        this.btnReduce.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        this.btnReduce.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.btnReduce.ForeColor = System.Drawing.Color.White;
-        this.btnReduce.Location = new System.Drawing.Point(649, 0);
-        this.btnReduce.Name = "btnReduce";
-        this.btnReduce.Size = new System.Drawing.Size(35, 35);
-        this.btnReduce.TabIndex = 1;
-        this.btnReduce.Text = "—";
-        this.btnReduce.UseVisualStyleBackColor = false;
-        // 
-        // pnlClose
-        // 
-        this.pnlClose.Controls.Add(this.btnClose);
-        this.pnlClose.Location = new System.Drawing.Point(685, 0);
-        this.pnlClose.Name = "pnlClose";
-        this.pnlClose.Size = new System.Drawing.Size(35, 35);
-        this.pnlClose.TabIndex = 2;
-        // 
-        // btnClose
-        // 
-        this.btnClose.BackColor = System.Drawing.Color.Transparent;
-        this.btnClose.FlatAppearance.BorderSize = 0;
-        this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
-        this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.btnClose.ForeColor = System.Drawing.Color.White;
-        this.btnClose.Location = new System.Drawing.Point(0, 0);
-        this.btnClose.Name = "btnClose";
-        this.btnClose.Size = new System.Drawing.Size(35, 35);
-        this.btnClose.TabIndex = 0;
-        this.btnClose.Text = "X";
-        this.btnClose.UseVisualStyleBackColor = false;
-        // 
-        // pnlTitleText
-        // 
-        this.pnlTitleText.Controls.Add(this.lblTitle);
-        this.pnlTitleText.Location = new System.Drawing.Point(40, 0);
-        this.pnlTitleText.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-        this.pnlTitleText.Name = "pnlTitleText";
-        this.pnlTitleText.Size = new System.Drawing.Size(200, 35);
-        this.pnlTitleText.TabIndex = 1;
-        // 
-        // lblTitle
-        // 
-        this.lblTitle.BackColor = System.Drawing.Color.Transparent;
-        this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-        this.lblTitle.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.lblTitle.ForeColor = System.Drawing.Color.White;
-        this.lblTitle.Location = new System.Drawing.Point(0, 0);
-        this.lblTitle.Margin = new System.Windows.Forms.Padding(0);
-        this.lblTitle.Name = "lblTitle";
-        this.lblTitle.Size = new System.Drawing.Size(200, 35);
-        this.lblTitle.TabIndex = 0;
-        this.lblTitle.Text = "UpGun Mod Loader";
-        this.lblTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-        this.lblTitle.UseMnemonic = false;
-        // 
-        // btnNext
-        // 
-        this.btnNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
-        this.btnNext.FlatAppearance.BorderSize = 0;
-        this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        this.btnNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.btnNext.ForeColor = System.Drawing.Color.White;
-        this.btnNext.Location = new System.Drawing.Point(377, 419);
-        this.btnNext.Name = "btnNext";
-        this.btnNext.Size = new System.Drawing.Size(40, 40);
-        this.btnNext.TabIndex = 1;
-        this.btnNext.Text = ">";
-        this.btnNext.UseVisualStyleBackColor = false;
-        // 
-        // lblPage
-        // 
-        this.lblPage.AutoSize = true;
-        this.lblPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
-        this.lblPage.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Bold);
-        this.lblPage.ForeColor = System.Drawing.Color.White;
-        this.lblPage.Location = new System.Drawing.Point(349, 430);
-        this.lblPage.Name = "lblPage";
-        this.lblPage.Size = new System.Drawing.Size(22, 29);
-        this.lblPage.TabIndex = 2;
-        this.lblPage.Text = "1";
-        this.lblPage.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-        // 
-        // btnPrevious
-        // 
-        this.btnPrevious.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
-        this.btnPrevious.FlatAppearance.BorderSize = 0;
-        this.btnPrevious.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        this.btnPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.btnPrevious.ForeColor = System.Drawing.Color.White;
-        this.btnPrevious.Location = new System.Drawing.Point(303, 419);
-        this.btnPrevious.Name = "btnPrevious";
-        this.btnPrevious.Size = new System.Drawing.Size(40, 40);
-        this.btnPrevious.TabIndex = 3;
-        this.btnPrevious.Text = "<";
-        this.btnPrevious.UseVisualStyleBackColor = false;
-        // 
-        // pnlPages
-        // 
-        this.pnlPages.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
-        this.pnlPages.Location = new System.Drawing.Point(303, 419);
-        this.pnlPages.Name = "pnlPages";
-        this.pnlPages.Size = new System.Drawing.Size(114, 40);
-        this.pnlPages.TabIndex = 4;
-        // 
-        // pnlSearch
-        // 
-        this.pnlSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
-        this.pnlSearch.Controls.Add(this.tbSearchBar);
-        this.pnlSearch.Controls.Add(this.cbSearchTypes);
-        this.pnlSearch.Location = new System.Drawing.Point(160, 50);
-        this.pnlSearch.Name = "pnlSearch";
-        this.pnlSearch.Size = new System.Drawing.Size(399, 40);
-        this.pnlSearch.TabIndex = 5;
-        // 
-        // tbSearchBar
-        // 
-        this.tbSearchBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
-        this.tbSearchBar.BorderStyle = System.Windows.Forms.BorderStyle.None;
-        this.tbSearchBar.Font = new System.Drawing.Font("Myanmar Text", 8.25F, System.Drawing.FontStyle.Bold);
-        this.tbSearchBar.ForeColor = System.Drawing.Color.White;
-        this.tbSearchBar.Location = new System.Drawing.Point(193, 11);
-        this.tbSearchBar.Name = "tbSearchBar";
-        this.tbSearchBar.Size = new System.Drawing.Size(190, 21);
-        this.tbSearchBar.TabIndex = 1;
-        this.tbSearchBar.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-        // 
-        // cbSearchTypes
-        // 
-        this.cbSearchTypes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
-        this.cbSearchTypes.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(65)))), ((int)(((byte)(75)))));
-        this.cbSearchTypes.ButtonWidth = 24;
-        this.cbSearchTypes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-        this.cbSearchTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-        this.cbSearchTypes.DropDownWidth = 173;
-        this.cbSearchTypes.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
-        this.cbSearchTypes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        this.cbSearchTypes.Font = new System.Drawing.Font("Myanmar Text", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        this.cbSearchTypes.ForeColor = System.Drawing.Color.White;
-        this.cbSearchTypes.FormattingEnabled = true;
-        this.cbSearchTypes.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(38)))), ((int)(((byte)(48)))));
-        this.cbSearchTypes.Items.AddRange(new object[] {
-        "All",
-        "Map",
-        "Gun Skin",
-        "Cosmetic",
-        "Player Model",
-        "Settings",
-        "Lobby Settings",
-        "HUD",
-        "Font",
-        "Event"});
-        this.cbSearchTypes.Location = new System.Drawing.Point(10, 6);
-        this.cbSearchTypes.Name = "cbSearchTypes";
-        this.cbSearchTypes.Radius = 6;
-        this.cbSearchTypes.Size = new System.Drawing.Size(173, 28);
-        this.cbSearchTypes.SelectedIndex = 0;
-        this.cbSearchTypes.TextColor = System.Drawing.Color.White;
-        this.cbSearchTypes.DrawMode = DrawMode.OwnerDrawFixed;
-        this.cbSearchTypes.DropDownStyle = ComboBoxStyle.DropDownList;
-        this.cbSearchTypes.IntegralHeight = false;
-        // 
-        // flpnlMods
-        // 
-        this.flpnlMods.Location = new System.Drawing.Point(10, 97);
-        this.flpnlMods.Name = "flpnlMods";
-        this.flpnlMods.Padding = new System.Windows.Forms.Padding(5);
-        this.flpnlMods.Size = new System.Drawing.Size(700, 316);
-        this.flpnlMods.TabIndex = 6;
-        // 
-        // UpGun_Mod_Loader
-        // 
-        this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(17)))), ((int)(((byte)(27)))));
-        this.ClientSize = new System.Drawing.Size(720, 470);
-        this.Controls.Add(this.flpnlMods);
-        this.Controls.Add(this.pnlSearch);
-        this.Controls.Add(this.btnPrevious);
-        this.Controls.Add(this.lblPage);
-        this.Controls.Add(this.btnNext);
-        this.Controls.Add(this.pnlPages);
-        this.Controls.Add(this.pnlTitle);
-        this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-        this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-        this.MaximumSize = new System.Drawing.Size(720, 470);
-        this.MinimumSize = new System.Drawing.Size(720, 470);
-        this.Name = "UpGun_Mod_Loader";
-        this.Text = "Mod Loader";
-        this.pnlTitle.ResumeLayout(false);
-        ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
-        this.pnlClose.ResumeLayout(false);
-        this.pnlTitleText.ResumeLayout(false);
-        this.pnlSearch.ResumeLayout(false);
-        this.pnlSearch.PerformLayout();
-        this.ResumeLayout(false);
-        this.PerformLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpGun_Mod_Loader));
+            this.pnlTitle = new System.Windows.Forms.Panel();
+            this.pbLogo = new System.Windows.Forms.PictureBox();
+            this.btnReduce = new System.Windows.Forms.Button();
+            this.pnlClose = new System.Windows.Forms.Panel();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.pnlTitleText = new System.Windows.Forms.Panel();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.btnNext = new System.Windows.Forms.Button();
+            this.lblPage = new System.Windows.Forms.Label();
+            this.btnPrevious = new System.Windows.Forms.Button();
+            this.pnlPages = new System.Windows.Forms.Panel();
+            this.pnlSearch = new System.Windows.Forms.Panel();
+            this.tbSearchBar = new System.Windows.Forms.TextBox();
+            this.flpnlMods = new System.Windows.Forms.FlowLayoutPanel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.cbSearchTypes = new DarkComboBox();
+            this.pnlTitle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
+            this.pnlClose.SuspendLayout();
+            this.pnlTitleText.SuspendLayout();
+            this.pnlSearch.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // pnlTitle
+            // 
+            this.pnlTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(29)))));
+            this.pnlTitle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pnlTitle.Controls.Add(this.pbLogo);
+            this.pnlTitle.Controls.Add(this.btnReduce);
+            this.pnlTitle.Controls.Add(this.pnlClose);
+            this.pnlTitle.Controls.Add(this.pnlTitleText);
+            this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTitle.Location = new System.Drawing.Point(0, 0);
+            this.pnlTitle.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.pnlTitle.Name = "pnlTitle";
+            this.pnlTitle.Size = new System.Drawing.Size(720, 35);
+            this.pnlTitle.TabIndex = 0;
+            // 
+            // pbLogo
+            // 
+            this.pbLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbLogo.Image")));
+            this.pbLogo.Location = new System.Drawing.Point(20, 3);
+            this.pbLogo.Name = "pbLogo";
+            this.pbLogo.Size = new System.Drawing.Size(35, 35);
+            this.pbLogo.TabIndex = 3;
+            this.pbLogo.TabStop = false;
+            // 
+            // btnReduce
+            // 
+            this.btnReduce.BackColor = System.Drawing.Color.Transparent;
+            this.btnReduce.FlatAppearance.BorderSize = 0;
+            this.btnReduce.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
+            this.btnReduce.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReduce.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReduce.ForeColor = System.Drawing.Color.White;
+            this.btnReduce.Location = new System.Drawing.Point(649, 0);
+            this.btnReduce.Name = "btnReduce";
+            this.btnReduce.Size = new System.Drawing.Size(35, 35);
+            this.btnReduce.TabIndex = 1;
+            this.btnReduce.Text = "—";
+            this.btnReduce.UseVisualStyleBackColor = false;
+            // 
+            // pnlClose
+            // 
+            this.pnlClose.Controls.Add(this.btnClose);
+            this.pnlClose.Location = new System.Drawing.Point(685, 0);
+            this.pnlClose.Name = "pnlClose";
+            this.pnlClose.Size = new System.Drawing.Size(35, 35);
+            this.pnlClose.TabIndex = 2;
+            // 
+            // btnClose
+            // 
+            this.btnClose.BackColor = System.Drawing.Color.Transparent;
+            this.btnClose.FlatAppearance.BorderSize = 0;
+            this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.ForeColor = System.Drawing.Color.White;
+            this.btnClose.Location = new System.Drawing.Point(0, 0);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(35, 35);
+            this.btnClose.TabIndex = 0;
+            this.btnClose.Text = "X";
+            this.btnClose.UseVisualStyleBackColor = false;
+            // 
+            // pnlTitleText
+            // 
+            this.pnlTitleText.Controls.Add(this.lblTitle);
+            this.pnlTitleText.Location = new System.Drawing.Point(40, 0);
+            this.pnlTitleText.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.pnlTitleText.Name = "pnlTitleText";
+            this.pnlTitleText.Size = new System.Drawing.Size(200, 35);
+            this.pnlTitleText.TabIndex = 1;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTitle.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ForeColor = System.Drawing.Color.White;
+            this.lblTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(200, 35);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "UpGun Mod Loader";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.lblTitle.UseMnemonic = false;
+            // 
+            // btnNext
+            // 
+            this.btnNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+            this.btnNext.FlatAppearance.BorderSize = 0;
+            this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNext.ForeColor = System.Drawing.Color.White;
+            this.btnNext.Location = new System.Drawing.Point(377, 419);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(40, 40);
+            this.btnNext.TabIndex = 1;
+            this.btnNext.Text = ">";
+            this.btnNext.UseVisualStyleBackColor = false;
+            // 
+            // lblPage
+            // 
+            this.lblPage.AutoSize = true;
+            this.lblPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+            this.lblPage.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Bold);
+            this.lblPage.ForeColor = System.Drawing.Color.White;
+            this.lblPage.Location = new System.Drawing.Point(349, 430);
+            this.lblPage.Name = "lblPage";
+            this.lblPage.Size = new System.Drawing.Size(22, 29);
+            this.lblPage.TabIndex = 2;
+            this.lblPage.Text = "1";
+            this.lblPage.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // btnPrevious
+            // 
+            this.btnPrevious.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+            this.btnPrevious.FlatAppearance.BorderSize = 0;
+            this.btnPrevious.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrevious.ForeColor = System.Drawing.Color.White;
+            this.btnPrevious.Location = new System.Drawing.Point(303, 419);
+            this.btnPrevious.Name = "btnPrevious";
+            this.btnPrevious.Size = new System.Drawing.Size(40, 40);
+            this.btnPrevious.TabIndex = 3;
+            this.btnPrevious.Text = "<";
+            this.btnPrevious.UseVisualStyleBackColor = false;
+            // 
+            // pnlPages
+            // 
+            this.pnlPages.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+            this.pnlPages.Location = new System.Drawing.Point(303, 419);
+            this.pnlPages.Name = "pnlPages";
+            this.pnlPages.Size = new System.Drawing.Size(114, 40);
+            this.pnlPages.TabIndex = 4;
+            // 
+            // pnlSearch
+            // 
+            this.pnlSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+            this.pnlSearch.Controls.Add(this.tbSearchBar);
+            this.pnlSearch.Controls.Add(this.cbSearchTypes);
+            this.pnlSearch.Location = new System.Drawing.Point(160, 50);
+            this.pnlSearch.Name = "pnlSearch";
+            this.pnlSearch.Size = new System.Drawing.Size(399, 40);
+            this.pnlSearch.TabIndex = 5;
+            // 
+            // tbSearchBar
+            // 
+            this.tbSearchBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+            this.tbSearchBar.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbSearchBar.Font = new System.Drawing.Font("Myanmar Text", 8.25F, System.Drawing.FontStyle.Bold);
+            this.tbSearchBar.ForeColor = System.Drawing.Color.White;
+            this.tbSearchBar.Location = new System.Drawing.Point(193, 11);
+            this.tbSearchBar.Name = "tbSearchBar";
+            this.tbSearchBar.Size = new System.Drawing.Size(190, 21);
+            this.tbSearchBar.TabIndex = 1;
+            this.tbSearchBar.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // flpnlMods
+            // 
+            this.flpnlMods.Location = new System.Drawing.Point(10, 97);
+            this.flpnlMods.Name = "flpnlMods";
+            this.flpnlMods.Padding = new System.Windows.Forms.Padding(5);
+            this.flpnlMods.Size = new System.Drawing.Size(700, 316);
+            this.flpnlMods.TabIndex = 6;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Image = global::UpGun_Mod_Loader_Autres_Notifs.DiscordLogo;
+            this.button1.Location = new System.Drawing.Point(663, 421);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(40, 40);
+            this.button1.TabIndex = 7;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // cbSearchTypes
+            // 
+            this.cbSearchTypes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+            this.cbSearchTypes.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(65)))), ((int)(((byte)(75)))));
+            this.cbSearchTypes.ButtonWidth = 24;
+            this.cbSearchTypes.DesiredHeight = 29;
+            this.cbSearchTypes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbSearchTypes.DropDownHeight = 184;
+            this.cbSearchTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSearchTypes.DropDownWidth = 173;
+            this.cbSearchTypes.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(22)))), ((int)(((byte)(30)))));
+            this.cbSearchTypes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbSearchTypes.Font = new System.Drawing.Font("Myanmar Text", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSearchTypes.ForeColor = System.Drawing.Color.White;
+            this.cbSearchTypes.FormattingEnabled = true;
+            this.cbSearchTypes.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(38)))), ((int)(((byte)(48)))));
+            this.cbSearchTypes.IntegralHeight = false;
+            this.cbSearchTypes.ItemHeight = 23;
+            this.cbSearchTypes.Items.AddRange(new object[] {
+            "All",
+            "Map",
+            "Gun Skin",
+            "Cosmetic",
+            "Player Model",
+            "Settings",
+            "Lobby Settings",
+            "HUD",
+            "Font",
+            "Event"});
+            this.cbSearchTypes.Location = new System.Drawing.Point(10, 6);
+            this.cbSearchTypes.Name = "cbSearchTypes";
+            this.cbSearchTypes.Radius = 6;
+            this.cbSearchTypes.Size = new System.Drawing.Size(173, 29);
+            this.cbSearchTypes.TabIndex = 2;
+            this.cbSearchTypes.TextColor = System.Drawing.Color.White;
+            // 
+            // UpGun_Mod_Loader
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(17)))), ((int)(((byte)(27)))));
+            this.ClientSize = new System.Drawing.Size(720, 470);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.flpnlMods);
+            this.Controls.Add(this.pnlSearch);
+            this.Controls.Add(this.btnPrevious);
+            this.Controls.Add(this.lblPage);
+            this.Controls.Add(this.btnNext);
+            this.Controls.Add(this.pnlPages);
+            this.Controls.Add(this.pnlTitle);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.MaximumSize = new System.Drawing.Size(720, 470);
+            this.MinimumSize = new System.Drawing.Size(720, 470);
+            this.Name = "UpGun_Mod_Loader";
+            this.Text = "Mod Loader";
+            this.pnlTitle.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
+            this.pnlClose.ResumeLayout(false);
+            this.pnlTitleText.ResumeLayout(false);
+            this.pnlSearch.ResumeLayout(false);
+            this.pnlSearch.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
 	}
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+        System.Diagnostics.Process.Start(
+            new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "https://discord.gg/9VKrCEbyAV",
+                UseShellExecute = true
+            }
+        );
+    }
 }
