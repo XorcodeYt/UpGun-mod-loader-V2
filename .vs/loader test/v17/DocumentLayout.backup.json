@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Noah Perso\\Documents\\GitHub\\FLIPPY-MOD-LOADER\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F244EC86-BFC4-0AF4-F7EA-DF6CB0AD1D47}|UpGunModLoader.csproj|c:\\users\\noah perso\\documents\\github\\flippy-mod-loader\\upgunmodloader3._0\\fonctions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F244EC86-BFC4-0AF4-F7EA-DF6CB0AD1D47}|UpGunModLoader.csproj|solutionrelative:upgunmodloader3._0\\fonctions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F244EC86-BFC4-0AF4-F7EA-DF6CB0AD1D47}|UpGunModLoader.csproj|c:\\users\\noah perso\\documents\\github\\flippy-mod-loader\\upgunmodloader3._0\\upgun_mod_loader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{F244EC86-BFC4-0AF4-F7EA-DF6CB0AD1D47}|UpGunModLoader.csproj|solutionrelative:upgunmodloader3._0\\upgun_mod_loader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
@@ -15,12 +19,8 @@
       "RelativeMoniker": "D:0:0:{F244EC86-BFC4-0AF4-F7EA-DF6CB0AD1D47}|UpGunModLoader.csproj|solutionrelative:upgun_mod_loader.autres\\splashscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F244EC86-BFC4-0AF4-F7EA-DF6CB0AD1D47}|UpGunModLoader.csproj|c:\\users\\noah perso\\documents\\github\\flippy-mod-loader\\upgun_mod_loader.autres\\splashscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{F244EC86-BFC4-0AF4-F7EA-DF6CB0AD1D47}|UpGunModLoader.csproj|C:\\Users\\Noah Perso\\Documents\\GitHub\\FLIPPY-MOD-LOADER\\upgun_mod_loader.autres\\splashscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{F244EC86-BFC4-0AF4-F7EA-DF6CB0AD1D47}|UpGunModLoader.csproj|solutionrelative:upgun_mod_loader.autres\\splashscreen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F244EC86-BFC4-0AF4-F7EA-DF6CB0AD1D47}|UpGunModLoader.csproj|c:\\users\\noah perso\\documents\\github\\flippy-mod-loader\\upgunmodloader3._0\\fonctions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F244EC86-BFC4-0AF4-F7EA-DF6CB0AD1D47}|UpGunModLoader.csproj|solutionrelative:upgunmodloader3._0\\fonctions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,11 +30,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "UpGun_Mod_Loader.cs",
               "DocumentMoniker": "C:\\Users\\Noah Perso\\Documents\\GitHub\\FLIPPY-MOD-LOADER\\UpGunModLoader3._0\\UpGun_Mod_Loader.cs",
               "RelativeDocumentMoniker": "UpGunModLoader3._0\\UpGun_Mod_Loader.cs",
@@ -47,7 +47,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "UpGun_Mod_Loader.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Noah Perso\\Documents\\GitHub\\FLIPPY-MOD-LOADER\\UpGunModLoader3._0\\UpGun_Mod_Loader.cs",
               "RelativeDocumentMoniker": "UpGunModLoader3._0\\UpGun_Mod_Loader.cs",
@@ -59,32 +59,31 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "Fonctions.cs",
               "DocumentMoniker": "C:\\Users\\Noah Perso\\Documents\\GitHub\\FLIPPY-MOD-LOADER\\UpGunModLoader3._0\\Fonctions.cs",
               "RelativeDocumentMoniker": "UpGunModLoader3._0\\Fonctions.cs",
-              "ToolTip": "C:\\Users\\Noah Perso\\Documents\\GitHub\\FLIPPY-MOD-LOADER\\UpGunModLoader3._0\\Fonctions.cs",
-              "RelativeToolTip": "UpGunModLoader3._0\\Fonctions.cs",
-              "ViewState": "AgIAAL8AAAAAAAAAAAAQwOUAAAAzAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\Noah Perso\\Documents\\GitHub\\FLIPPY-MOD-LOADER\\UpGunModLoader3._0\\Fonctions.cs*",
+              "RelativeToolTip": "UpGunModLoader3._0\\Fonctions.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-15T21:50:57.352Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "SplashScreen.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Noah Perso\\Documents\\GitHub\\FLIPPY-MOD-LOADER\\UpGun_Mod_Loader.Autres\\SplashScreen.cs",
               "RelativeDocumentMoniker": "UpGun_Mod_Loader.Autres\\SplashScreen.cs",
               "ToolTip": "C:\\Users\\Noah Perso\\Documents\\GitHub\\FLIPPY-MOD-LOADER\\UpGun_Mod_Loader.Autres\\SplashScreen.cs [Design]",
               "RelativeToolTip": "UpGun_Mod_Loader.Autres\\SplashScreen.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-15T21:39:57.018Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-08-15T21:39:57.018Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "SplashScreen.cs",
               "DocumentMoniker": "C:\\Users\\Noah Perso\\Documents\\GitHub\\FLIPPY-MOD-LOADER\\UpGun_Mod_Loader.Autres\\SplashScreen.cs",
               "RelativeDocumentMoniker": "UpGun_Mod_Loader.Autres\\SplashScreen.cs",
@@ -92,8 +91,7 @@
               "RelativeToolTip": "UpGun_Mod_Loader.Autres\\SplashScreen.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADQAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-13T22:35:42.962Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-13T22:35:42.962Z"
             }
           ]
         }

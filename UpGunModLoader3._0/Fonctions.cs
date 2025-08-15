@@ -34,7 +34,7 @@ internal class Fonctions
 
 	private static string path2 = appdatapath2 + "\\repak.exe";
 
-	private static string AESKey = "0x79524750FB51C47CB6A52DA27E708AB78D91D62A196525FDF18F19424AC45498";
+	private static string AESKey = "AES KEY";
 
 	private static string ARPath = GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\\UpGun\\AssetRegistry.bin";
 
