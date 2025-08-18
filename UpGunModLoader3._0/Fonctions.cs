@@ -38,7 +38,9 @@ internal class Fonctions
 
 	private static string ARPath = GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\\UpGun\\AssetRegistry.bin";
 
-	public static string PakGameFilePath = GetUpGunPath() + "\\UpGun-WindowsNoEditor.pak";
+	private static string ARPath2 = GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\\UpGun\\Content";
+
+    public static string PakGameFilePath = GetUpGunPath() + "\\UpGun-WindowsNoEditor.pak";
 
 	public static string PakModsSupportFilePath = GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry.pak";
 
@@ -199,6 +201,25 @@ internal class Fonctions
 		}
 		return true;
 	}
+    static void CopyDirectory(string sourceDir, string destDir, bool recursive)
+    {
+        Directory.CreateDirectory(destDir);
+
+        foreach (string file in Directory.GetFiles(sourceDir))
+        {
+            string targetFilePath = Path.Combine(destDir, Path.GetFileName(file));
+            File.Copy(file, targetFilePath, overwrite: true);
+        }
+
+        if (recursive)
+        {
+            foreach (string directory in Directory.GetDirectories(sourceDir))
+            {
+                string targetDirectoryPath = Path.Combine(destDir, Path.GetFileName(directory));
+                CopyDirectory(directory, targetDirectoryPath, recursive);
+            }
+        }
+    }
 
     public static void InstallModsSupport()
     {
@@ -220,7 +241,10 @@ internal class Fonctions
 
             SplashManager.Update("Moving AssetRegistry.bin");
             Directory.CreateDirectory(GetUpGunPath() + "\\UpGun-WindowsNoEditor_AssetRegistry\\UpGun");
-            File.Move(GetUpGunPath() + "\\UpGun-WindowsNoEditor\\UpGun\\AssetRegistry.bin", ARPath);
+			File.Move(GetUpGunPath() + "\\UpGun-WindowsNoEditor\\UpGun\\AssetRegistry.bin", ARPath);
+
+            SplashManager.Update("Adapting game files");
+            CopyDirectory(appdatapath2 + "\\Content", ARPath2, true);
 
             SplashManager.Update("Repacking game content");
             ExecuteCmdCommand($"{quotedPath2} pack \"{GetUpGunPath()}\\UpGun-WindowsNoEditor\"");

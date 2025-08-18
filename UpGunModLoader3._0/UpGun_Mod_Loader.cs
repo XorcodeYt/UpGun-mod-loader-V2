@@ -298,7 +298,7 @@ public class UpGun_Mod_Loader : Form
         {
             Name = $"switchButton_{OwnerName}",
             AutoSize = true,
-            Location = new Point(239, 50),
+            Location = new Point(260, 60),
             MinimumSize = new Size(45, 22),
             Size = new Size(45, 22),
             OffBackColor = Color.Gray,

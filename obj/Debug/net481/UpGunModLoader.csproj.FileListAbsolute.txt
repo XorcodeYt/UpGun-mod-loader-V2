@@ -33,3 +33,4 @@ C:\Users\Noah Perso\Documents\GitHub\FLIPPY-MOD-LOADER\obj\Debug\net481\UpGunMod
 C:\Users\Noah Perso\Documents\GitHub\FLIPPY-MOD-LOADER\obj\Debug\net481\UpGunModLoader.exe
 C:\Users\Noah Perso\Documents\GitHub\FLIPPY-MOD-LOADER\obj\Debug\net481\UpGunModLoader.pdb
 C:\Users\Noah Perso\Documents\GitHub\FLIPPY-MOD-LOADER\obj\Debug\net481\UpGunModLoader.exe.config
+C:\Users\Noah Perso\Documents\GitHub\FLIPPY-MOD-LOADER\obj\Debug\net481\UpGun_Mod_Loader.Autres.SplashScreen.resources
