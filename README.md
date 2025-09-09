@@ -1,13 +1,39 @@
-UpGun Mod Loader 2.0
+<h1 align="center">UpGun Mod Loader 2.0 ⚡</h1>
+<p align="center">
+  <b>A modern, reworked Mod Loader for UpGun</b><br>
+  <i>Cleaner • Faster • More Reliable</i>
+</p>
 
-This Mod Loader for UpGun is based on Flippy’s original version but has been completely reworked to deliver a cleaner look, better performance, and improved reliability.
+<p align="center">
+  <img src="https://i.ibb.co/Zp70hcBt/Capture-d-cran-2025-09-09-125343.png" alt="UpGun Mod Loader Screenshot" width="600">
+</p>
 
-We have:
+---
 
-Fully redesigned the UI to be clean, minimalistic, and easy to use.
+## ✨ Features & Improvements
 
-Rebuilt the server-side infrastructure no more Dropbox, now running on a dedicated server for faster downloads and improved stability.
+- 🎨 Fully redesigned UI: minimal, clean, and user-friendly  
+- ⚡ Rebuilt infrastructure: no more Dropbox, everything runs on a dedicated server for faster and more reliable downloads  
+- 💬 New Discord community: get updates, share mods, and receive support  
+- 🔧 Full UpGun mod support restored, bringing the modding scene back to life  
 
-Launched a new Discord server for community interaction, updates, and support.
+---
 
-Restored full UpGun mod support, bringing the modding scene back to life.
+## 📥 Installation
+
+1. Go to the **[Releases](../../releases/latest)** page  
+2. Download the **latest release**  
+3. Extract the `.zip` file  
+4. Run the installer  
+5. Once installed, you can delete the `.zip` and extracted folder  
+6. Launch the Mod Loader from the desktop shortcut  
+
+> ⚠️ Windows only  
+
+---
+
+## 🙏 Credits
+
+- Flippy for the original Mod Loader  
+- [Queen.IO](https://github.com/WorkingRobot/QueenIO)  
+- [UAssetAPI](https://github.com/atenfyr/UAssetAPI)  
