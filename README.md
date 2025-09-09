@@ -14,7 +14,7 @@
 
 - 🎨 Fully redesigned UI: minimal, clean, and user-friendly  
 - ⚡ Rebuilt infrastructure: no more Dropbox, everything runs on a dedicated server for faster and more reliable downloads  
-- 💬 New Discord community: get updates, share mods, and receive support  
+- 💬 New **[Discord](https://discord.gg/9VKrCEbyAV)** community: get updates, share mods, and receive support  
 - 🔧 Full UpGun mod support restored, bringing the modding scene back to life  
 
 ---
